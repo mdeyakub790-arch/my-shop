@@ -1,769 +1,155 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>আমার দোকান — অনলাইন শপ</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>আমার দোকান | অনলাইন শপ</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f5f5f5;color:#222}
-header{position:sticky;top:0;z-index:100;background:#111827;color:#fff;box-shadow:0 2px 12px #0002}
-.topbar{max-width:1200px;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:14px 18px;gap:12px}
-.logo{font-size:27px;font-weight:900;white-space:nowrap}
-.logo span{color:#ff5a1f}
-.cart-btn{border:0;background:#ff5a1f;color:#fff;padding:12px 18px;border-radius:12px;font-size:17px;font-weight:bold;cursor:pointer}
-.hero{background:linear-gradient(135deg,#ff5a1f,#e11d48);color:#fff;text-align:center;padding:28px 15px}
-.hero h1{font-size:32px;margin-bottom:7px} .hero p{font-size:17px}
-.search-wrap{max-width:1100px;margin:18px auto;padding:0 15px}
-.search{width:100%;padding:16px 20px;border:2px solid #ddd;border-radius:14px;font-size:18px;outline:none;background:#fff}
-.search:focus{border-color:#ff5a1f}
-.category{display:flex;gap:9px;overflow:auto;max-width:1100px;margin:0 auto 18px;padding:0 15px 5px}
-.category button{white-space:nowrap;border:1px solid #ddd;background:#fff;border-radius:20px;padding:9px 15px;cursor:pointer}
-.category button.active{background:#ff5a1f;color:#fff;border-color:#ff5a1f}
-.container{max-width:1200px;margin:auto;padding:0 15px 40px}
-.section-title{font-size:24px;font-weight:900;margin:12px 0 15px}
-.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.product-card{background:#fff;border-radius:14px;overflow:hidden;box-shadow:0 2px 8px #00000012;transition:.2s}
-.product-card:hover{transform:translateY(-2px);box-shadow:0 6px 18px #0002}
-.product-img{height:155px;background:linear-gradient(145deg,#fff7f2,#f3f4f6);display:flex;align-items:center;justify-content:center;font-size:78px;position:relative}
-.badge{position:absolute;top:8px;left:8px;background:#e11d48;color:#fff;border-radius:5px;padding:4px 7px;font-size:10px;font-weight:bold}
-.product-info{padding:12px}
-.product-name{font-size:17px;font-weight:800;min-height:42px}
-.price{font-size:22px;color:#f04419;font-weight:900}
-.old-price{color:#999;text-decoration:line-through;font-size:13px;margin-left:5px}
-.rating{font-size:12px;color:#f59e0b;margin:5px 0 9px}
-.rating small{color:#888}
-.add-btn{width:100%;border:0;background:#ff5a1f;color:#fff;border-radius:9px;padding:11px 5px;font-size:15px;font-weight:bold;cursor:pointer}
-.add-btn:active,.cart-btn:active{transform:scale(.98)}
-footer{background:#111827;color:#ddd;text-align:center;padding:28px 15px;margin-top:20px}
-.overlay{display:none;position:fixed;inset:0;background:#0009;z-index:200;padding:15px;overflow:auto}
-.modal{background:#fff;max-width:650px;margin:20px auto;border-radius:18px;padding:20px;position:relative}
-.close{position:absolute;right:15px;top:12px;border:0;background:#ef4444;color:#fff;border-radius:50%;width:42px;height:42px;font-size:25px;cursor:pointer}
-.modal h2{font-size:27px;margin:5px 50px 20px 0}
-.cart-list{max-height:42vh;overflow:auto}
-.cart-item{display:flex;align-items:center;gap:10px;padding:12px 0;border-bottom:1px solid #eee}
-.cart-icon{font-size:38px;width:55px;text-align:center}
-.cart-meta{flex:1} .cart-meta b{font-size:17px}
-.qty{display:flex;align-items:center;gap:8px;margin-top:7px}
-.qty button{width:34px;height:34px;border:0;background:#2563eb;color:#fff;border-radius:7px;font-size:20px}
-.delete{border:0;background:#fee2e2;color:#dc2626;padding:8px;border-radius:7px;cursor:pointer}
-.total{font-size:24px;font-weight:900;text-align:right;padding:18px 0}
-.order-title{border-top:1px solid #ddd;padding-top:18px;margin-top:5px;font-size:23px}
-.form input,.form textarea{width:100%;padding:14px;margin-top:10px;border:2px solid #ddd;border-radius:10px;font-size:16px}
-.form textarea{height:95px;resize:vertical}
-.confirm{width:100%;border:0;background:#16a34a;color:#fff;padding:15px;border-radius:10px;font-size:18px;font-weight:bold;margin-top:12px;cursor:pointer}
-.empty{text-align:center;padding:25px;color:#777}
-@media(min-width:700px){.products{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.product-img{height:190px}}
-@media(min-width:1050px){.products{grid-template-columns:repeat(5,minmax(0,1fr))}}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f4f5f8;color:#222;padding-bottom:65px}
+a{text-decoration:none}.top{background:#0b1730;color:#fff;position:sticky;top:0;z-index:20}.bar{max-width:1200px;margin:auto;padding:10px 14px;display:flex;gap:10px;align-items:center}.logo{font-size:25px;font-weight:900;white-space:nowrap}.logo i{font-style:normal;font-size:32px}
+.search{flex:1;height:44px;background:#fff;border-radius:24px;display:flex;overflow:hidden}.search input{flex:1;border:0;outline:0;padding:0 15px;font-size:16px}.search button{border:0;background:#f85606;color:#fff;padding:0 20px;font-weight:800}.cart{border:0;background:#2874f0;color:#fff;border-radius:11px;padding:12px 16px;font-size:16px;font-weight:800}
+.wrap{max-width:1200px;margin:auto;padding:12px}.banner{border-radius:16px;min-height:175px;padding:25px;background:linear-gradient(110deg,#f85606,#ff8a00);color:#fff;display:flex;align-items:center;justify-content:space-between;box-shadow:0 5px 18px #f8560630}.banner h1{font-size:32px;margin:0 0 8px}.banner p{margin:0;font-size:17px}.banner strong{font-size:48px}
+.cats{display:flex;gap:8px;overflow:auto;padding:12px 0;scrollbar-width:none}.cats::-webkit-scrollbar{display:none}.cat{border:0;background:#fff;border-radius:20px;padding:10px 16px;white-space:nowrap;font-weight:700}.cat.active{background:#f85606;color:#fff}
+.title{display:flex;justify-content:space-between;align-items:center;margin:6px 0 12px}.title h2{margin:0}.page{color:#f85606;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:#fff;border-radius:14px;padding:10px;box-shadow:0 2px 9px #0001;position:relative}.pic{height:145px;border-radius:10px;background:linear-gradient(135deg,#fff1e8,#eef3ff);display:flex;align-items:center;justify-content:center;font-size:70px}.badge{position:absolute;top:17px;left:17px;background:#f85606;color:#fff;border-radius:4px;padding:3px 6px;font-size:11px}.card h3{font-size:16px;margin:9px 2px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.price{color:#f85606;font-size:20px;font-weight:900;margin-bottom:8px}.old{color:#999;text-decoration:line-through;font-size:12px}.add{width:100%;border:0;background:#f85606;color:#fff;border-radius:8px;padding:10px;font-weight:800;font-size:14px}
+footer{margin-top:25px;background:#0b1730;color:#fff;text-align:center;padding:25px}.bottom{position:fixed;bottom:0;left:0;right:0;height:65px;background:#fff;border-top:1px solid #ddd;z-index:30;display:flex;justify-content:space-around;align-items:center}.bottom button,.bottom a{border:0;background:none;text-align:center;font-size:12px;color:#333}.bottom b{display:block;font-size:22px}
+.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:100;padding:12px;overflow:auto}.modal{max-width:700px;margin:15px auto;background:#fff;border-radius:20px;overflow:hidden}.mh{background:#0b1730;color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center}.mh h2{margin:0}.close{width:42px;height:42px;border:0;border-radius:50%;background:#f44336;color:#fff;font-size:25px}.mb{padding:15px}.item{display:flex;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid #eee}.ico{font-size:38px;width:50px}.info{flex:1}.info h3{margin:0 0 4px}.ip{color:#f85606;font-weight:800}.qty{display:flex;align-items:center;gap:7px}.qty button{width:34px;height:34px;border:0;border-radius:7px;background:#2874f0;color:#fff;font-size:20px}.del{border:0;background:#f44336;color:#fff;border-radius:7px;padding:8px}.total{text-align:right;font-size:25px;font-weight:900;padding:17px 0}.form{border-top:1px solid #ddd;padding-top:15px}.form h3{margin:0 0 10px;font-size:21px}.form input,.form textarea{width:100%;padding:13px;border:1px solid #ccc;border-radius:9px;font-size:16px;margin-bottom:9px}.form textarea{min-height:90px}.wa{width:100%;border:0;background:#19a44a;color:#fff;padding:15px;border-radius:10px;font-size:18px;font-weight:900}.hint{text-align:center;color:#777;font-size:12px;margin-top:7px}
+@media(max-width:700px){.bar{flex-wrap:wrap}.logo{font-size:20px}.logo i{font-size:27px}.search{order:3;flex-basis:100%}.cart{font-size:14px;padding:11px}.banner{min-height:135px;padding:18px}.banner h1{font-size:24px}.banner strong{font-size:32px}.banner p{font-size:13px}.grid{grid-template-columns:repeat(2,1fr);gap:8px}.pic{height:125px;font-size:60px}.card h3{font-size:14px}.price{font-size:18px}.add{font-size:12px;padding:9px}}
 </style>
 </head>
 <body>
-<header>
- <div class="topbar">
-  <div class="logo">🛒 <span>আমার দোকান</span></div>
-  <button class="cart-btn" onclick="openCart()">🛒 Cart (<span id="cartCount">0</span>)</button>
- </div>
-</header>
-<section class="hero"><h1>সেরা পণ্য, সেরা দাম</h1><p>দ্রুত অর্ডার করুন • সহজে কিনুন • WhatsApp-এ যোগাযোগ</p></section>
-<div class="search-wrap"><input id="search" class="search" placeholder="🔍 পণ্য খুঁজুন..." oninput="renderProducts()"></div>
-<div class="category">
- <button class="active" onclick="filterCat('all',this)">সব পণ্য</button>
- <button onclick="filterCat('fashion',this)">ফ্যাশন</button>
- <button onclick="filterCat('mobile',this)">মোবাইল</button>
- <button onclick="filterCat('home',this)">হোম</button>
- <button onclick="filterCat('beauty',this)">বিউটি</button>
- <button onclick="filterCat('kids',this)">শিশু</button>
- <button onclick="filterCat('sports',this)">স্পোর্টস</button>
-</div>
-<main class="container">
- <div class="section-title">🔥 জনপ্রিয় পণ্য</div>
- <div id="products" class="products">
-      <article class="product-card" data-name="সুন্দর টি-শার্ট">
-        <div class="product-img">👕<span class="badge">HOT</span></div>
-        <div class="product-info">
-          <div class="product-name">সুন্দর টি-শার্ট</div>
-          <div><span class="price">৳500</span> <span class="old-price">৳600</span></div>
-          <div class="rating">★★★★★ <small>(21)</small></div>
-          <button class="add-btn" onclick="addToCart(0)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="স্টাইলিশ জুতা">
-        <div class="product-img">👟<span class="badge">HOT</span></div>
-        <div class="product-info">
-          <div class="product-name">স্টাইলিশ জুতা</div>
-          <div><span class="price">৳1200</span> <span class="old-price">৳1300</span></div>
-          <div class="rating">★★★★★ <small>(22)</small></div>
-          <button class="add-btn" onclick="addToCart(1)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="স্মার্ট ঘড়ি">
-        <div class="product-img">⌚<span class="badge">HOT</span></div>
-        <div class="product-info">
-          <div class="product-name">স্মার্ট ঘড়ি</div>
-          <div><span class="price">৳1500</span> <span class="old-price">৳1650</span></div>
-          <div class="rating">★★★★★ <small>(23)</small></div>
-          <button class="add-btn" onclick="addToCart(2)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="সানগ্লাস">
-        <div class="product-img">🕶️<span class="badge">HOT</span></div>
-        <div class="product-info">
-          <div class="product-name">সানগ্লাস</div>
-          <div><span class="price">৳800</span> <span class="old-price">৳900</span></div>
-          <div class="rating">★★★★★ <small>(24)</small></div>
-          <button class="add-btn" onclick="addToCart(3)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ফ্যাশন ব্যাগ">
-        <div class="product-img">👜<span class="badge">HOT</span></div>
-        <div class="product-info">
-          <div class="product-name">ফ্যাশন ব্যাগ</div>
-          <div><span class="price">৳900</span> <span class="old-price">৳1000</span></div>
-          <div class="rating">★★★★★ <small>(25)</small></div>
-          <button class="add-btn" onclick="addToCart(4)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="হেডফোন">
-        <div class="product-img">🎧<span class="badge">HOT</span></div>
-        <div class="product-info">
-          <div class="product-name">হেডফোন</div>
-          <div><span class="price">৳1100</span> <span class="old-price">৳1250</span></div>
-          <div class="rating">★★★★★ <small>(26)</small></div>
-          <button class="add-btn" onclick="addToCart(5)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="মোবাইল কভার">
-        <div class="product-img">📱<span class="badge">HOT</span></div>
-        <div class="product-info">
-          <div class="product-name">মোবাইল কভার</div>
-          <div><span class="price">৳300</span> <span class="old-price">৳400</span></div>
-          <div class="rating">★★★★★ <small>(27)</small></div>
-          <button class="add-btn" onclick="addToCart(6)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="পারফিউম">
-        <div class="product-img">🌸<span class="badge">HOT</span></div>
-        <div class="product-info">
-          <div class="product-name">পারফিউম</div>
-          <div><span class="price">৳1000</span> <span class="old-price">৳1100</span></div>
-          <div class="rating">★★★★★ <small>(28)</small></div>
-          <button class="add-btn" onclick="addToCart(7)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="পোলো শার্ট">
-        <div class="product-img">👕<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">পোলো শার্ট</div>
-          <div><span class="price">৳650</span> <span class="old-price">৳800</span></div>
-          <div class="rating">★★★★★ <small>(29)</small></div>
-          <button class="add-btn" onclick="addToCart(8)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="জিন্স প্যান্ট">
-        <div class="product-img">👖<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">জিন্স প্যান্ট</div>
-          <div><span class="price">৳1400</span> <span class="old-price">৳1500</span></div>
-          <div class="rating">★★★★★ <small>(30)</small></div>
-          <button class="add-btn" onclick="addToCart(9)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ক্যাজুয়াল শার্ট">
-        <div class="product-img">👔<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ক্যাজুয়াল শার্ট</div>
-          <div><span class="price">৳750</span> <span class="old-price">৳850</span></div>
-          <div class="rating">★★★★★ <small>(31)</small></div>
-          <button class="add-btn" onclick="addToCart(10)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="স্পোর্টস জুতা">
-        <div class="product-img">👟<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">স্পোর্টস জুতা</div>
-          <div><span class="price">৳1600</span> <span class="old-price">৳1750</span></div>
-          <div class="rating">★★★★★ <small>(32)</small></div>
-          <button class="add-btn" onclick="addToCart(11)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="লেডিস ব্যাগ">
-        <div class="product-img">👜<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">লেডিস ব্যাগ</div>
-          <div><span class="price">৳850</span> <span class="old-price">৳950</span></div>
-          <div class="rating">★★★★★ <small>(33)</small></div>
-          <button class="add-btn" onclick="addToCart(12)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ওয়ালেট">
-        <div class="product-img">👛<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ওয়ালেট</div>
-          <div><span class="price">৳450</span> <span class="old-price">৳550</span></div>
-          <div class="rating">★★★★★ <small>(34)</small></div>
-          <button class="add-btn" onclick="addToCart(13)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="বেল্ট">
-        <div class="product-img">🧷<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">বেল্ট</div>
-          <div><span class="price">৳350</span> <span class="old-price">৳500</span></div>
-          <div class="rating">★★★★★ <small>(35)</small></div>
-          <button class="add-btn" onclick="addToCart(14)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ক্যাপ">
-        <div class="product-img">🧢<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ক্যাপ</div>
-          <div><span class="price">৳300</span> <span class="old-price">৳400</span></div>
-          <div class="rating">★★★★★ <small>(36)</small></div>
-          <button class="add-btn" onclick="addToCart(15)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="স্পোর্টস ঘড়ি">
-        <div class="product-img">⌚<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">স্পোর্টস ঘড়ি</div>
-          <div><span class="price">৳1800</span> <span class="old-price">৳1900</span></div>
-          <div class="rating">★★★★★ <small>(37)</small></div>
-          <button class="add-btn" onclick="addToCart(16)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ব্লুটুথ স্পিকার">
-        <div class="product-img">🔊<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ব্লুটুথ স্পিকার</div>
-          <div><span class="price">৳1300</span> <span class="old-price">৳1450</span></div>
-          <div class="rating">★★★★★ <small>(38)</small></div>
-          <button class="add-btn" onclick="addToCart(17)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ইয়ারবাড">
-        <div class="product-img">🎧<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ইয়ারবাড</div>
-          <div><span class="price">৳1250</span> <span class="old-price">৳1350</span></div>
-          <div class="rating">★★★★★ <small>(39)</small></div>
-          <button class="add-btn" onclick="addToCart(18)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="পাওয়ার ব্যাংক">
-        <div class="product-img">🔋<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">পাওয়ার ব্যাংক</div>
-          <div><span class="price">৳1400</span> <span class="old-price">৳1500</span></div>
-          <div class="rating">★★★★★ <small>(40)</small></div>
-          <button class="add-btn" onclick="addToCart(19)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="চার্জার">
-        <div class="product-img">🔌<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">চার্জার</div>
-          <div><span class="price">৳550</span> <span class="old-price">৳700</span></div>
-          <div class="rating">★★★★★ <small>(41)</small></div>
-          <button class="add-btn" onclick="addToCart(20)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="USB কেবল">
-        <div class="product-img">🔗<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">USB কেবল</div>
-          <div><span class="price">৳250</span> <span class="old-price">৳350</span></div>
-          <div class="rating">★★★★★ <small>(42)</small></div>
-          <button class="add-btn" onclick="addToCart(21)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="মোবাইল স্ট্যান্ড">
-        <div class="product-img">📱<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">মোবাইল স্ট্যান্ড</div>
-          <div><span class="price">৳350</span> <span class="old-price">৳450</span></div>
-          <div class="rating">★★★★★ <small>(43)</small></div>
-          <button class="add-btn" onclick="addToCart(22)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="সেলফি স্টিক">
-        <div class="product-img">🤳<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">সেলফি স্টিক</div>
-          <div><span class="price">৳600</span> <span class="old-price">৳750</span></div>
-          <div class="rating">★★★★★ <small>(44)</small></div>
-          <button class="add-btn" onclick="addToCart(23)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ল্যাপটপ ব্যাগ">
-        <div class="product-img">💼<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ল্যাপটপ ব্যাগ</div>
-          <div><span class="price">৳1200</span> <span class="old-price">৳1300</span></div>
-          <div class="rating">★★★★★ <small>(45)</small></div>
-          <button class="add-btn" onclick="addToCart(24)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ব্যাকপ্যাক">
-        <div class="product-img">🎒<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ব্যাকপ্যাক</div>
-          <div><span class="price">৳900</span> <span class="old-price">৳1000</span></div>
-          <div class="rating">★★★★★ <small>(46)</small></div>
-          <button class="add-btn" onclick="addToCart(25)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ট্রাভেল ব্যাগ">
-        <div class="product-img">🧳<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ট্রাভেল ব্যাগ</div>
-          <div><span class="price">৳1700</span> <span class="old-price">৳1850</span></div>
-          <div class="rating">★★★★★ <small>(47)</small></div>
-          <button class="add-btn" onclick="addToCart(26)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="মেকআপ ব্যাগ">
-        <div class="product-img">💄<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">মেকআপ ব্যাগ</div>
-          <div><span class="price">৳500</span> <span class="old-price">৳600</span></div>
-          <div class="rating">★★★★★ <small>(48)</small></div>
-          <button class="add-btn" onclick="addToCart(27)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="কিচেন সেট">
-        <div class="product-img">🍳<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">কিচেন সেট</div>
-          <div><span class="price">৳950</span> <span class="old-price">৳1050</span></div>
-          <div class="rating">★★★★★ <small>(49)</small></div>
-          <button class="add-btn" onclick="addToCart(28)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="কফি মগ">
-        <div class="product-img">☕<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">কফি মগ</div>
-          <div><span class="price">৳300</span> <span class="old-price">৳450</span></div>
-          <div class="rating">★★★★★ <small>(50)</small></div>
-          <button class="add-btn" onclick="addToCart(29)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="পানির বোতল">
-        <div class="product-img">🧴<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">পানির বোতল</div>
-          <div><span class="price">৳450</span> <span class="old-price">৳550</span></div>
-          <div class="rating">★★★★★ <small>(51)</small></div>
-          <button class="add-btn" onclick="addToCart(30)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="লাঞ্চ বক্স">
-        <div class="product-img">🍱<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">লাঞ্চ বক্স</div>
-          <div><span class="price">৳550</span> <span class="old-price">৳650</span></div>
-          <div class="rating">★★★★★ <small>(52)</small></div>
-          <button class="add-btn" onclick="addToCart(31)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="নোটবুক">
-        <div class="product-img">📓<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">নোটবুক</div>
-          <div><span class="price">৳250</span> <span class="old-price">৳400</span></div>
-          <div class="rating">★★★★★ <small>(53)</small></div>
-          <button class="add-btn" onclick="addToCart(32)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="কলম সেট">
-        <div class="product-img">🖊️<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">কলম সেট</div>
-          <div><span class="price">৳180</span> <span class="old-price">৳280</span></div>
-          <div class="rating">★★★★★ <small>(54)</small></div>
-          <button class="add-btn" onclick="addToCart(33)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ডেস্ক ল্যাম্প">
-        <div class="product-img">💡<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ডেস্ক ল্যাম্প</div>
-          <div><span class="price">৳800</span> <span class="old-price">৳900</span></div>
-          <div class="rating">★★★★★ <small>(55)</small></div>
-          <button class="add-btn" onclick="addToCart(34)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="টেবিল ঘড়ি">
-        <div class="product-img">⏰<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">টেবিল ঘড়ি</div>
-          <div><span class="price">৳650</span> <span class="old-price">৳800</span></div>
-          <div class="rating">★★★★★ <small>(56)</small></div>
-          <button class="add-btn" onclick="addToCart(35)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="বেডশিট">
-        <div class="product-img">🛏️<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">বেডশিট</div>
-          <div><span class="price">৳1200</span> <span class="old-price">৳1300</span></div>
-          <div class="rating">★★★★★ <small>(57)</small></div>
-          <button class="add-btn" onclick="addToCart(36)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="কুশন কভার">
-        <div class="product-img">🛋️<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">কুশন কভার</div>
-          <div><span class="price">৳450</span> <span class="old-price">৳550</span></div>
-          <div class="rating">★★★★★ <small>(58)</small></div>
-          <button class="add-btn" onclick="addToCart(37)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="তোয়ালে সেট">
-        <div class="product-img">🧺<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">তোয়ালে সেট</div>
-          <div><span class="price">৳700</span> <span class="old-price">৳850</span></div>
-          <div class="rating">★★★★★ <small>(59)</small></div>
-          <button class="add-btn" onclick="addToCart(38)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="রুম অর্গানাইজার">
-        <div class="product-img">🗄️<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">রুম অর্গানাইজার</div>
-          <div><span class="price">৳600</span> <span class="old-price">৳700</span></div>
-          <div class="rating">★★★★★ <small>(60)</small></div>
-          <button class="add-btn" onclick="addToCart(39)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="LED লাইট">
-        <div class="product-img">💡<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">LED লাইট</div>
-          <div><span class="price">৳500</span> <span class="old-price">৳600</span></div>
-          <div class="rating">★★★★★ <small>(61)</small></div>
-          <button class="add-btn" onclick="addToCart(40)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ফ্যান">
-        <div class="product-img">🌀<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ফ্যান</div>
-          <div><span class="price">৳1500</span> <span class="old-price">৳1650</span></div>
-          <div class="rating">★★★★★ <small>(62)</small></div>
-          <button class="add-btn" onclick="addToCart(41)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ইলেকট্রিক কেটলি">
-        <div class="product-img">🫖<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ইলেকট্রিক কেটলি</div>
-          <div><span class="price">৳1800</span> <span class="old-price">৳1900</span></div>
-          <div class="rating">★★★★★ <small>(63)</small></div>
-          <button class="add-btn" onclick="addToCart(42)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ইনডাকশন কুকার">
-        <div class="product-img">🍳<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ইনডাকশন কুকার</div>
-          <div><span class="price">৳2500</span> <span class="old-price">৳2600</span></div>
-          <div class="rating">★★★★★ <small>(64)</small></div>
-          <button class="add-btn" onclick="addToCart(43)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ফেসওয়াশ">
-        <div class="product-img">🧴<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ফেসওয়াশ</div>
-          <div><span class="price">৳450</span> <span class="old-price">৳600</span></div>
-          <div class="rating">★★★★★ <small>(65)</small></div>
-          <button class="add-btn" onclick="addToCart(44)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="স্কিন কেয়ার সেট">
-        <div class="product-img">🧴<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">স্কিন কেয়ার সেট</div>
-          <div><span class="price">৳1200</span> <span class="old-price">৳1300</span></div>
-          <div class="rating">★★★★★ <small>(66)</small></div>
-          <button class="add-btn" onclick="addToCart(45)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="হেয়ার ড্রায়ার">
-        <div class="product-img">💨<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">হেয়ার ড্রায়ার</div>
-          <div><span class="price">৳1400</span> <span class="old-price">৳1500</span></div>
-          <div class="rating">★★★★★ <small>(67)</small></div>
-          <button class="add-btn" onclick="addToCart(46)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="হেয়ার ব্রাশ">
-        <div class="product-img">💇<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">হেয়ার ব্রাশ</div>
-          <div><span class="price">৳350</span> <span class="old-price">৳500</span></div>
-          <div class="rating">★★★★★ <small>(68)</small></div>
-          <button class="add-btn" onclick="addToCart(47)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="মেয়েদের স্যান্ডেল">
-        <div class="product-img">👡<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">মেয়েদের স্যান্ডেল</div>
-          <div><span class="price">৳750</span> <span class="old-price">৳850</span></div>
-          <div class="rating">★★★★★ <small>(69)</small></div>
-          <button class="add-btn" onclick="addToCart(48)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ছেলেদের স্যান্ডেল">
-        <div class="product-img">🩴<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ছেলেদের স্যান্ডেল</div>
-          <div><span class="price">৳800</span> <span class="old-price">৳900</span></div>
-          <div class="rating">★★★★★ <small>(70)</small></div>
-          <button class="add-btn" onclick="addToCart(49)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="শিশুদের জামা">
-        <div class="product-img">🧒<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">শিশুদের জামা</div>
-          <div><span class="price">৳600</span> <span class="old-price">৳750</span></div>
-          <div class="rating">★★★★★ <small>(71)</small></div>
-          <button class="add-btn" onclick="addToCart(50)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="শিশুদের জুতা">
-        <div class="product-img">👟<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">শিশুদের জুতা</div>
-          <div><span class="price">৳700</span> <span class="old-price">৳800</span></div>
-          <div class="rating">★★★★★ <small>(72)</small></div>
-          <button class="add-btn" onclick="addToCart(51)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="খেলনা গাড়ি">
-        <div class="product-img">🚗<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">খেলনা গাড়ি</div>
-          <div><span class="price">৳550</span> <span class="old-price">৳650</span></div>
-          <div class="rating">★★★★★ <small>(73)</small></div>
-          <button class="add-btn" onclick="addToCart(52)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="রিমোট কার">
-        <div class="product-img">🚙<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">রিমোট কার</div>
-          <div><span class="price">৳1100</span> <span class="old-price">৳1250</span></div>
-          <div class="rating">★★★★★ <small>(74)</small></div>
-          <button class="add-btn" onclick="addToCart(53)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ফুটবল">
-        <div class="product-img">⚽<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ফুটবল</div>
-          <div><span class="price">৳650</span> <span class="old-price">৳750</span></div>
-          <div class="rating">★★★★★ <small>(75)</small></div>
-          <button class="add-btn" onclick="addToCart(54)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ব্যাডমিন্টন সেট">
-        <div class="product-img">🏸<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ব্যাডমিন্টন সেট</div>
-          <div><span class="price">৳900</span> <span class="old-price">৳1000</span></div>
-          <div class="rating">★★★★★ <small>(76)</small></div>
-          <button class="add-btn" onclick="addToCart(55)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="যোগা ম্যাট">
-        <div class="product-img">🧘<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">যোগা ম্যাট</div>
-          <div><span class="price">৳750</span> <span class="old-price">৳900</span></div>
-          <div class="rating">★★★★★ <small>(77)</small></div>
-          <button class="add-btn" onclick="addToCart(56)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article>
-      <article class="product-card" data-name="ফিটনেস ব্যান্ড">
-        <div class="product-img">💪<span class="badge">NEW</span></div>
-        <div class="product-info">
-          <div class="product-name">ফিটনেস ব্যান্ড</div>
-          <div><span class="price">৳850</span> <span class="old-price">৳950</span></div>
-          <div class="rating">★★★★★ <small>(78)</small></div>
-          <button class="add-btn" onclick="addToCart(57)">🛒 কার্টে যোগ করুন</button>
-        </div>
-      </article></div>
-</main>
-<footer>© 2026 আমার দোকান — সর্বস্বত্ব সংরক্ষিত<br><small>অনলাইন অর্ডার: WhatsApp</small></footer>
+<header class="top"><div class="bar">
+<a class="logo" href="#"><i>🛒</i> আমার দোকান</a>
+<div class="search"><input id="search" placeholder="🔎 পণ্য খুঁজুন..." oninput="render()"><button onclick="render()">খুঁজুন</button></div>
+<button class="cart" onclick="openCart()">🛒 Cart (<span id="count">0</span>)</button>
+</div></header>
 
-<div id="overlay" class="overlay">
- <div class="modal">
-  <button class="close" onclick="closeCart()">×</button>
-  <h2>🛒 আপনার কার্ট</h2>
-  <div id="cartList" class="cart-list"></div>
-  <div id="total" class="total">মোট: ৳0</div>
-  <div class="order-title">📦 অর্ডারের তথ্য</div>
-  <div class="form">
-   <input id="customerName" placeholder="আপনার নাম">
-   <input id="customerPhone" placeholder="মোবাইল নম্বর" inputmode="tel">
-   <textarea id="customerAddress" placeholder="আপনার সম্পূর্ণ ঠিকানা"></textarea>
-   <button class="confirm" onclick="orderWhatsApp()">✅ অর্ডার নিশ্চিত করুন</button>
-  </div>
- </div>
-</div>
+<main class="wrap">
+<div class="banner"><div><h1>সেরা পণ্য, সেরা দাম</h1><p>দ্রুত অর্ডার • WhatsApp যোগাযোগ • ঘরে বসে কেনাকাটা</p></div><strong>SALE<br>৫০+</strong></div>
+<div class="cats" id="cats"></div>
+<div class="title"><h2 id="ttl">🔥 জনপ্রিয় পণ্য</h2><a class="page" href="YOUR_PAGE_LINK" target="_blank">আমার পেইজ →</a></div>
+<div class="grid" id="products"></div>
+</main>
+
+<footer><h2>🛒 আমার দোকান</h2><p>ভালো পণ্য • ন্যায্য দাম • দ্রুত যোগাযোগ</p><p>© 2026 আমার দোকান</p></footer>
+
+<nav class="bottom">
+<a href="#"><b>🏠</b>হোম</a>
+<button onclick="document.getElementById('cats').scrollIntoView({behavior:'smooth'})"><b>☰</b>ক্যাটাগরি</button>
+<button onclick="openCart()"><b>🛒</b>Cart</button>
+<a href="YOUR_PAGE_LINK" target="_blank"><b>👤</b>পেইজ</a>
+</nav>
+
+<div class="overlay" id="overlay" onclick="if(event.target===this)closeCart()"><div class="modal">
+<div class="mh"><h2>🛒 আপনার কার্ট</h2><button class="close" onclick="closeCart()">×</button></div>
+<div class="mb"><div id="items"></div><div class="total">মোট: ৳<span id="total">0</span></div>
+<div class="form"><h3>📦 অর্ডারের তথ্য</h3>
+<input id="name" placeholder="আপনার নাম"><input id="phone" type="tel" placeholder="মোবাইল নম্বর"><textarea id="address" placeholder="আপনার সম্পূর্ণ ঠিকানা"></textarea>
+<button class="wa" onclick="orderWhatsApp()">📱 WhatsApp-এ অর্ডার করুন</button>
+<div class="hint">নাম, মোবাইল ও ঠিকানা লিখে বাটনে চাপুন। অর্ডারের সব তথ্য WhatsApp-এ যাবে।</div>
+</div></div></div></div>
 
 <script>
-const products = [{id:0,name:"সুন্দর টি-শার্ট",price:500,icon:"👕"},
-{id:1,name:"স্টাইলিশ জুতা",price:1200,icon:"👟"},
-{id:2,name:"স্মার্ট ঘড়ি",price:1500,icon:"⌚"},
-{id:3,name:"সানগ্লাস",price:800,icon:"🕶️"},
-{id:4,name:"ফ্যাশন ব্যাগ",price:900,icon:"👜"},
-{id:5,name:"হেডফোন",price:1100,icon:"🎧"},
-{id:6,name:"মোবাইল কভার",price:300,icon:"📱"},
-{id:7,name:"পারফিউম",price:1000,icon:"🌸"},
-{id:8,name:"পোলো শার্ট",price:650,icon:"👕"},
-{id:9,name:"জিন্স প্যান্ট",price:1400,icon:"👖"},
-{id:10,name:"ক্যাজুয়াল শার্ট",price:750,icon:"👔"},
-{id:11,name:"স্পোর্টস জুতা",price:1600,icon:"👟"},
-{id:12,name:"লেডিস ব্যাগ",price:850,icon:"👜"},
-{id:13,name:"ওয়ালেট",price:450,icon:"👛"},
-{id:14,name:"বেল্ট",price:350,icon:"🧷"},
-{id:15,name:"ক্যাপ",price:300,icon:"🧢"},
-{id:16,name:"স্পোর্টস ঘড়ি",price:1800,icon:"⌚"},
-{id:17,name:"ব্লুটুথ স্পিকার",price:1300,icon:"🔊"},
-{id:18,name:"ইয়ারবাড",price:1250,icon:"🎧"},
-{id:19,name:"পাওয়ার ব্যাংক",price:1400,icon:"🔋"},
-{id:20,name:"চার্জার",price:550,icon:"🔌"},
-{id:21,name:"USB কেবল",price:250,icon:"🔗"},
-{id:22,name:"মোবাইল স্ট্যান্ড",price:350,icon:"📱"},
-{id:23,name:"সেলফি স্টিক",price:600,icon:"🤳"},
-{id:24,name:"ল্যাপটপ ব্যাগ",price:1200,icon:"💼"},
-{id:25,name:"ব্যাকপ্যাক",price:900,icon:"🎒"},
-{id:26,name:"ট্রাভেল ব্যাগ",price:1700,icon:"🧳"},
-{id:27,name:"মেকআপ ব্যাগ",price:500,icon:"💄"},
-{id:28,name:"কিচেন সেট",price:950,icon:"🍳"},
-{id:29,name:"কফি মগ",price:300,icon:"☕"},
-{id:30,name:"পানির বোতল",price:450,icon:"🧴"},
-{id:31,name:"লাঞ্চ বক্স",price:550,icon:"🍱"},
-{id:32,name:"নোটবুক",price:250,icon:"📓"},
-{id:33,name:"কলম সেট",price:180,icon:"🖊️"},
-{id:34,name:"ডেস্ক ল্যাম্প",price:800,icon:"💡"},
-{id:35,name:"টেবিল ঘড়ি",price:650,icon:"⏰"},
-{id:36,name:"বেডশিট",price:1200,icon:"🛏️"},
-{id:37,name:"কুশন কভার",price:450,icon:"🛋️"},
-{id:38,name:"তোয়ালে সেট",price:700,icon:"🧺"},
-{id:39,name:"রুম অর্গানাইজার",price:600,icon:"🗄️"},
-{id:40,name:"LED লাইট",price:500,icon:"💡"},
-{id:41,name:"ফ্যান",price:1500,icon:"🌀"},
-{id:42,name:"ইলেকট্রিক কেটলি",price:1800,icon:"🫖"},
-{id:43,name:"ইনডাকশন কুকার",price:2500,icon:"🍳"},
-{id:44,name:"ফেসওয়াশ",price:450,icon:"🧴"},
-{id:45,name:"স্কিন কেয়ার সেট",price:1200,icon:"🧴"},
-{id:46,name:"হেয়ার ড্রায়ার",price:1400,icon:"💨"},
-{id:47,name:"হেয়ার ব্রাশ",price:350,icon:"💇"},
-{id:48,name:"মেয়েদের স্যান্ডেল",price:750,icon:"👡"},
-{id:49,name:"ছেলেদের স্যান্ডেল",price:800,icon:"🩴"},
-{id:50,name:"শিশুদের জামা",price:600,icon:"🧒"},
-{id:51,name:"শিশুদের জুতা",price:700,icon:"👟"},
-{id:52,name:"খেলনা গাড়ি",price:550,icon:"🚗"},
-{id:53,name:"রিমোট কার",price:1100,icon:"🚙"},
-{id:54,name:"ফুটবল",price:650,icon:"⚽"},
-{id:55,name:"ব্যাডমিন্টন সেট",price:900,icon:"🏸"},
-{id:56,name:"যোগা ম্যাট",price:750,icon:"🧘"},
-{id:57,name:"ফিটনেস ব্যান্ড",price:850,icon:"💪"}];
-let cart = JSON.parse(localStorage.getItem("myShopCart") || "[]");
-let activeCat = "all";
+const products = [
+  {id:1,name:'সুন্দর টি-শার্ট',price:500,icon:'👕',cat:'ফ্যাশন'},
+  {id:2,name:'স্টাইলিশ জুতা',price:1200,icon:'👟',cat:'ফ্যাশন'},
+  {id:3,name:'স্মার্ট ঘড়ি',price:1500,icon:'⌚',cat:'ইলেকট্রনিক্স'},
+  {id:4,name:'সানগ্লাস',price:800,icon:'🕶️',cat:'ফ্যাশন'},
+  {id:5,name:'ব্যাকপ্যাক',price:900,icon:'🎒',cat:'ফ্যাশন'},
+  {id:6,name:'হেডফোন',price:1100,icon:'🎧',cat:'ইলেকট্রনিক্স'},
+  {id:7,name:'মোবাইল কভার',price:300,icon:'📱',cat:'মোবাইল'},
+  {id:8,name:'পারফিউম',price:1000,icon:'🧴',cat:'বিউটি'},
+  {id:9,name:'ওয়্যারলেস ইয়ারবাড',price:1300,icon:'🎧',cat:'ইলেকট্রনিক্স'},
+  {id:10,name:'পাওয়ার ব্যাংক',price:1200,icon:'🔋',cat:'ইলেকট্রনিক্স'},
+  {id:11,name:'ব্লুটুথ স্পিকার',price:1400,icon:'🔊',cat:'ইলেকট্রনিক্স'},
+  {id:12,name:'স্মার্ট ব্যান্ড',price:950,icon:'⌚',cat:'ইলেকট্রনিক্স'},
+  {id:13,name:'চার্জার',price:450,icon:'🔌',cat:'মোবাইল'},
+  {id:14,name:'ডাটা কেবল',price:250,icon:'🔗',cat:'মোবাইল'},
+  {id:15,name:'মিনি ট্রাইপড',price:650,icon:'📷',cat:'ইলেকট্রনিক্স'},
+  {id:16,name:'রিং লাইট',price:900,icon:'💡',cat:'ইলেকট্রনিক্স'},
+  {id:17,name:'ল্যাপটপ ব্যাগ',price:1300,icon:'💼',cat:'ফ্যাশন'},
+  {id:18,name:'মানিব্যাগ',price:550,icon:'👛',cat:'ফ্যাশন'},
+  {id:19,name:'বেল্ট',price:450,icon:'🧷',cat:'ফ্যাশন'},
+  {id:20,name:'ক্যাপ',price:350,icon:'🧢',cat:'ফ্যাশন'},
+  {id:21,name:'কিচেন অর্গানাইজার',price:700,icon:'🍱',cat:'হোম'},
+  {id:22,name:'পানির বোতল',price:500,icon:'🍼',cat:'হোম'},
+  {id:23,name:'কফি মগ',price:350,icon:'☕',cat:'হোম'},
+  {id:24,name:'টেবিল ল্যাম্প',price:850,icon:'💡',cat:'হোম'},
+  {id:25,name:'বেডশিট',price:1200,icon:'🛏️',cat:'হোম'},
+  {id:26,name:'কুশন সেট',price:650,icon:'🛋️',cat:'হোম'},
+  {id:27,name:'স্টোরেজ বক্স',price:600,icon:'📦',cat:'হোম'},
+  {id:28,name:'ননস্টিক প্যান',price:1500,icon:'🍳',cat:'হোম'},
+  {id:29,name:'কাটিং বোর্ড',price:450,icon:'🪵',cat:'হোম'},
+  {id:30,name:'ড্রেসিং মিরর',price:1100,icon:'🪞',cat:'হোম'},
+  {id:31,name:'ফেস ওয়াশ',price:400,icon:'🧴',cat:'বিউটি'},
+  {id:32,name:'ময়েশ্চারাইজার',price:650,icon:'🧴',cat:'বিউটি'},
+  {id:33,name:'সানস্ক্রিন',price:750,icon:'🌞',cat:'বিউটি'},
+  {id:34,name:'লিপ বাম',price:250,icon:'💄',cat:'বিউটি'},
+  {id:35,name:'হেয়ার ড্রায়ার',price:1200,icon:'💨',cat:'বিউটি'},
+  {id:36,name:'হেয়ার ব্রাশ',price:300,icon:'🪮',cat:'বিউটি'},
+  {id:37,name:'মেকআপ ব্যাগ',price:500,icon:'👜',cat:'বিউটি'},
+  {id:38,name:'বডি স্প্রে',price:700,icon:'🌸',cat:'বিউটি'},
+  {id:39,name:'কিচেন স্কেল',price:800,icon:'⚖️',cat:'হোম'},
+  {id:40,name:'ইলেকট্রিক কেটলি',price:1350,icon:'🫖',cat:'হোম'},
+  {id:41,name:'মিনি ফ্যান',price:750,icon:'🌀',cat:'ইলেকট্রনিক্স'},
+  {id:42,name:'USB হাব',price:550,icon:'🔌',cat:'ইলেকট্রনিক্স'},
+  {id:43,name:'মাউস',price:500,icon:'🖱️',cat:'ইলেকট্রনিক্স'},
+  {id:44,name:'কীবোর্ড',price:950,icon:'⌨️',cat:'ইলেকট্রনিক্স'},
+  {id:45,name:'ল্যাপটপ স্ট্যান্ড',price:850,icon:'💻',cat:'ইলেকট্রনিক্স'},
+  {id:46,name:'গেমিং মাউস',price:900,icon:'🎮',cat:'ইলেকট্রনিক্স'},
+  {id:47,name:'মোবাইল স্ট্যান্ড',price:350,icon:'📱',cat:'মোবাইল'},
+  {id:48,name:'সেলফি স্টিক',price:600,icon:'🤳',cat:'মোবাইল'},
+  {id:49,name:'কার চার্জার',price:500,icon:'🚗',cat:'মোবাইল'},
+  {id:50,name:'মোবাইল ওয়ালেট',price:400,icon:'📱',cat:'মোবাইল'},
+  {id:51,name:'বাচ্চাদের খেলনা গাড়ি',price:650,icon:'🚗',cat:'বাচ্চাদের'},
+  {id:52,name:'বিল্ডিং ব্লক',price:900,icon:'🧱',cat:'বাচ্চাদের'},
+  {id:53,name:'টেডি বিয়ার',price:800,icon:'🧸',cat:'বাচ্চাদের'},
+  {id:54,name:'স্কুল ব্যাগ',price:850,icon:'🎒',cat:'বাচ্চাদের'},
+  {id:55,name:'পাজল গেম',price:450,icon:'🧩',cat:'বাচ্চাদের'},
+  {id:56,name:'ফুটবল',price:700,icon:'⚽',cat:'স্পোর্টস'},
+  {id:57,name:'ব্যাডমিন্টন র\u200d্যাকেট',price:1200,icon:'🏸',cat:'স্পোর্টস'},
+  {id:58,name:'যোগা ম্যাট',price:900,icon:'🧘',cat:'স্পোর্টস'},
+  {id:59,name:'স্পোর্টস বোতল',price:500,icon:'🥤',cat:'স্পোর্টস'}
+];
+let cart=[], selected="সব";
 
-function saveCart() {
- localStorage.setItem("myShopCart", JSON.stringify(cart));
- updateCartCount();
+function money(n){return Number(n).toLocaleString("bn-BD")}
+function categories(){
+ const a=["সব",...new Set(products.map(p=>p.cat))];
+ document.getElementById("cats").innerHTML=a.map(c=>`<button class="cat ${c===selected?"active":""}" onclick="selectCat('${c}')">${c==="সব"?"🏠":"🛍️"} ${c}</button>`).join("");
 }
-function updateCartCount() {
- document.getElementById("cartCount").textContent = cart.reduce((s,i)=>s+i.quantity,0);
+function selectCat(c){selected=c;document.getElementById("ttl").textContent=c==="সব"?"🔥 জনপ্রিয় পণ্য":"🛍️ "+c;categories();render()}
+function render(){
+ const q=document.getElementById("search").value.toLowerCase().trim();
+ const list=products.filter(p=>(selected==="সব"||p.cat===selected)&&p.name.toLowerCase().includes(q));
+ document.getElementById("products").innerHTML=list.length?list.map(p=>`
+ <div class="card"><span class="badge">জনপ্রিয়</span><div class="pic">${p.icon}</div>
+ <h3>${p.name}</h3><div class="price">৳${money(p.price)} <span class="old">৳${money(Math.round(p.price*1.25))}</span></div>
+ <button class="add" onclick="add(${p.id})">🛒 Cart-এ যোগ করুন</button></div>`).join(""):`<div style="grid-column:1/-1;text-align:center;background:#fff;padding:40px;border-radius:12px">😔 কোনো পণ্য পাওয়া যায়নি</div>`;
 }
-function addToCart(index) {
- const p=products[index], found=cart.find(i=>i.id===p.id);
- if(found) found.quantity++; else cart.push({...p,quantity:1});
- saveCart();
- alert("✅ "+p.name+" কার্টে যোগ হয়েছে");
-}
-function openCart() { document.getElementById("overlay").style.display="block"; renderCart(); }
-function closeCart() { document.getElementById("overlay").style.display="none"; }
-function changeQty(id,delta) {
- const item=cart.find(i=>i.id===id); if(!item)return;
- item.quantity += delta;
- if(item.quantity<1) item.quantity=1;
- saveCart(); renderCart();
-}
-function removeItem(id) {
- cart=cart.filter(i=>i.id!==id); saveCart(); renderCart();
-}
-function renderCart() {
- const list=document.getElementById("cartList");
- if(!cart.length) {
-  list.innerHTML='<div class="empty">🛒 আপনার কার্ট খালি</div>';
-  document.getElementById("total").textContent="মোট: ৳0"; return;
- }
+function add(id){const p=products.find(x=>x.id===id),f=cart.find(x=>x.id===id);f?f.quantity++:cart.push({...p,quantity:1});update()}
+function update(){
+ document.getElementById("count").textContent=cart.reduce((s,x)=>s+x.quantity,0);
  let total=0;
- list.innerHTML=cart.map(item=>{
-  const sub=item.price*item.quantity; total+=sub;
-  return `<div class="cart-item">
-   <div class="cart-icon">${item.icon}</div>
-   <div class="cart-meta"><b>${item.name}</b><br><span>৳${item.price} × ${item.quantity} = <b>৳${sub}</b></span>
-    <div class="qty"><button onclick="changeQty(${item.id},-1)">−</button><span>${item.quantity}</span><button onclick="changeQty(${item.id},1)">+</button></div>
-   </div>
-   <button class="delete" onclick="removeItem(${item.id})">🗑️</button>
-  </div>`;
- }).join("");
- document.getElementById("total").textContent="মোট: ৳"+total;
+ document.getElementById("items").innerHTML=cart.length?cart.map(x=>{let sub=x.price*x.quantity;total+=sub;return`
+ <div class="item"><div class="ico">${x.icon}</div><div class="info"><h3>${x.name}</h3><div class="ip">৳${money(x.price)} × ${x.quantity} = ৳${money(sub)}</div></div>
+ <div class="qty"><button onclick="qty(${x.id},-1)">−</button><b>${x.quantity}</b><button onclick="qty(${x.id},1)">+</button></div><button class="del" onclick="removeItem(${x.id})">🗑️</button></div>`}).join(""):`<div style="text-align:center;padding:30px">🛒 আপনার Cart খালি</div>`;
+ document.getElementById("total").textContent=money(total);
 }
-function orderWhatsApp() {
- if(!cart.length) { alert("আপনার Cart খালি!"); return; }
- const name=document.getElementById("customerName").value.trim();
- const phone=document.getElementById("customerPhone").value.trim();
- const address=document.getElementById("customerAddress").value.trim();
- if(!name) {alert("দয়া করে আপনার নাম লিখুন");return;}
- if(!phone) {alert("দয়া করে আপনার মোবাইল নম্বর লিখুন");return;}
- if(!address) {alert("দয়া করে আপনার সম্পূর্ণ ঠিকানা লিখুন");return;}
- let message="🛍️ *আমার দোকানে নতুন অর্ডার*\n\n";
- message+="👤 *নাম:* "+name+"\n";
- message+="📱 *মোবাইল:* "+phone+"\n";
- message+="📍 *ঠিকানা:* "+address+"\n\n";
- message+="📦 *অর্ডারের পণ্য:*\n";
- let total=0;
- cart.forEach((item,index)=>{
-  const sub=item.price*item.quantity; total+=sub;
-  message+=(index+1)+". "+item.name+" × "+item.quantity+" = ৳"+sub+"\n";
- });
- message+="\n💰 *মোট: ৳"+total+"*\n";
- message+="\n✅ অনুগ্রহ করে আমার অর্ডারটি গ্রহণ করুন।";
+function qty(id,d){let x=cart.find(a=>a.id===id);if(!x)return;x.quantity+=d;if(x.quantity<1)cart=cart.filter(a=>a.id!==id);update()}
+function removeItem(id){cart=cart.filter(x=>x.id!==id);update()}
+function openCart(){document.getElementById("overlay").style.display="block";update()}
+function closeCart(){document.getElementById("overlay").style.display="none"}
+
+function orderWhatsApp(){
+ if(!cart.length){alert("আপনার Cart খালি!");return}
+ const name=document.getElementById("name").value.trim(),phone=document.getElementById("phone").value.trim(),address=document.getElementById("address").value.trim();
+ if(!name||!phone||!address){alert("দয়া করে নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা দিন");return}
+ let msg="🛍️ নতুন অর্ডার - আমার দোকান\n\n👤 নাম: "+name+"\n📱 মোবাইল: "+phone+"\n📍 ঠিকানা: "+address+"\n\n📦 অর্ডারের পণ্য:\n",total=0;
+ cart.forEach((x,i)=>{let sub=x.price*x.quantity;total+=sub;msg+=(i+1)+". "+x.name+" × "+x.quantity+" = ৳"+sub+"\n"});
+ msg+="\n💰 মোট: ৳"+total+"\n\n✅ অর্ডারটি গ্রহণ করার অনুরোধ করছি।";
  const whatsappNumber="966567225245";
- const url="https://wa.me/"+whatsappNumber+"?text="+encodeURIComponent(message);
- window.open(url,"_blank");
+ window.location.href="https://wa.me/"+whatsappNumber+"?text="+encodeURIComponent(msg);
 }
-function filterCat(cat,btn) {
- activeCat=cat;
- document.querySelectorAll(".category button").forEach(b=>b.classList.remove("active"));
- btn.classList.add("active");
- renderProducts();
-}
-function renderProducts() {
- const q=document.getElementById("search").value.toLowerCase();
- document.querySelectorAll(".product-card").forEach((card,i)=>{
-  const name=products[i].name.toLowerCase();
-  let show=name.includes(q);
-  card.style.display=show?"block":"none";
- });
-}
-document.getElementById("overlay").addEventListener("click",e=>{if(e.target.id==="overlay")closeCart();});
-updateCartCount();
+categories();render();update();
 </script>
-</body>
-            </html>
+</body></html>
