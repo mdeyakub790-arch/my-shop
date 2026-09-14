@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+১<!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
@@ -7,470 +7,558 @@
 <title>আমার দোকান</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  background: #f5f7fb;
-  color: #222;
+body{
+  font-family:Arial,"Noto Sans Bengali",sans-serif;
+  background:#f5f7fb;
+  color:#222;
 }
 
-header {
-  background: #111827;
-  color: white;
-  padding: 18px 5%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 100;
+header{
+  background:#111827;
+  color:white;
+  padding:18px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:sticky;
+  top:0;
+  z-index:100;
 }
 
-.logo {
-  font-size: 28px;
-  font-weight: bold;
+.logo{
+  font-size:30px;
+  font-weight:bold;
 }
 
-.cart-btn {
-  background: #2563eb;
-  color: white;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
-  font-size: 18px;
-  cursor: pointer;
+.cartBtn{
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:14px 20px;
+  border-radius:12px;
+  font-size:18px;
+  cursor:pointer;
 }
 
-.hero {
-  background: linear-gradient(135deg, #2563eb, #7c3aed);
-  color: white;
-  text-align: center;
-  padding: 60px 20px;
+.hero{
+  background:linear-gradient(135deg,#2563eb,#16a34a);
+  color:white;
+  text-align:center;
+  padding:55px 20px;
 }
 
-.hero h1 {
-  font-size: 40px;
-  margin-bottom: 12px;
+.hero h1{
+  font-size:40px;
+  margin-bottom:12px;
 }
 
-.hero p {
-  font-size: 20px;
+.hero p{
+  font-size:20px;
 }
 
-.search-box {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 0 20px;
+.searchBox{
+  max-width:700px;
+  margin:25px auto;
+  padding:0 15px;
 }
 
-.search-box input {
-  width: 100%;
-  padding: 16px;
-  border: 2px solid #ddd;
-  border-radius: 12px;
-  font-size: 18px;
+.searchBox input{
+  width:100%;
+  padding:16px;
+  border:2px solid #ddd;
+  border-radius:12px;
+  font-size:18px;
 }
 
-.products {
-  max-width: 1100px;
-  margin: 30px auto;
-  padding: 0 20px;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 22px;
+.products{
+  max-width:1100px;
+  margin:30px auto;
+  padding:0 15px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
 }
 
-.product {
-  background: white;
-  border-radius: 15px;
-  padding: 18px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-  text-align: center;
+.product{
+  background:white;
+  border-radius:16px;
+  padding:20px;
+  box-shadow:0 5px 20px rgba(0,0,0,.08);
+  text-align:center;
 }
 
-.product-img {
-  width: 100%;
-  height: 180px;
-  border-radius: 12px;
-  background: #eef2ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 80px;
-  margin-bottom: 15px;
+.productImage{
+  font-size:70px;
+  margin-bottom:15px;
 }
 
-.product h3 {
-  font-size: 22px;
-  margin-bottom: 10px;
+.product h3{
+  font-size:23px;
+  margin-bottom:10px;
 }
 
-.price {
-  color: #2563eb;
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 15px;
+.price{
+  color:#2563eb;
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:15px;
 }
 
-.add-btn {
-  width: 100%;
-  padding: 13px;
-  border: none;
-  border-radius: 10px;
-  background: #2563eb;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
+.addBtn{
+  width:100%;
+  background:#16a34a;
+  color:white;
+  border:none;
+  padding:14px;
+  border-radius:10px;
+  font-size:18px;
+  cursor:pointer;
 }
 
-.add-btn:active {
-  transform: scale(0.97);
+.addBtn:active,
+.cartBtn:active,
+.whatsappBtn:active,
+.confirmBtn:active{
+  transform:scale(.98);
 }
 
-/* CART */
-.overlay {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.65);
-  z-index: 500;
+footer{
+  background:#111827;
+  color:white;
+  text-align:center;
+  padding:30px 15px;
+  margin-top:50px;
 }
 
-.cart-box {
-  display: none;
-  position: fixed;
-  z-index: 600;
-  background: white;
-  width: 94%;
-  max-width: 650px;
-  max-height: 90vh;
-  overflow-y: auto;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border-radius: 22px;
-  padding: 25px;
+
+/* OVERLAY */
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  z-index:200;
 }
 
-.cart-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 25px;
+
+/* CART BOX */
+.cartBox{
+  display:none;
+  position:fixed;
+  z-index:300;
+  background:white;
+  width:94%;
+  max-width:650px;
+  max-height:92vh;
+  overflow-y:auto;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  border-radius:28px;
+  padding:30px;
 }
 
-.cart-header h2 {
-  font-size: 32px;
+.cartHeader{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:25px;
 }
 
-.close-btn {
-  width: 48px;
-  height: 48px;
-  border: none;
-  border-radius: 50%;
-  background: #ef4444;
-  color: white;
-  font-size: 28px;
-  cursor: pointer;
+.cartHeader h2{
+  font-size:34px;
 }
 
-.cart-item {
-  border-bottom: 1px solid #ddd;
-  padding: 18px 0;
+.closeBtn{
+  background:#ef4444;
+  color:white;
+  border:none;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  font-size:32px;
+  cursor:pointer;
 }
 
-.cart-item h3 {
-  font-size: 22px;
-  margin-bottom: 8px;
+
+/* CART ITEM */
+.cartItem{
+  padding:20px 0;
+  border-bottom:2px solid #eee;
 }
 
-.cart-price {
-  color: #2563eb;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 12px;
+.cartItem h3{
+  font-size:25px;
+  margin-bottom:10px;
 }
 
-.quantity-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.itemPrice{
+  color:#2563eb;
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:15px;
 }
 
-.quantity-row button {
-  width: 48px;
-  height: 48px;
-  border: none;
-  border-radius: 10px;
-  background: #2563eb;
-  color: white;
-  font-size: 25px;
-  cursor: pointer;
+.quantityRow{
+  display:flex;
+  align-items:center;
+  gap:18px;
 }
 
-.quantity {
-  font-size: 22px;
-  min-width: 25px;
-  text-align: center;
+.qtyBtn{
+  width:60px;
+  height:60px;
+  border:none;
+  border-radius:12px;
+  background:#2563eb;
+  color:white;
+  font-size:30px;
+  cursor:pointer;
 }
 
-.delete-btn {
-  margin-left: 10px;
-  background: #ef4444 !important;
+.quantity{
+  font-size:25px;
+  min-width:25px;
+  text-align:center;
 }
 
-.total {
-  text-align: right;
-  font-size: 30px;
-  font-weight: bold;
-  margin: 25px 0;
+.deleteBtn{
+  width:60px;
+  height:60px;
+  border:none;
+  border-radius:12px;
+  background:#ef4444;
+  color:white;
+  font-size:25px;
+  cursor:pointer;
 }
 
-.whatsapp-btn {
-  width: 100%;
-  padding: 18px;
-  border: none;
-  border-radius: 14px;
-  background: #16a34a;
-  color: white;
-  font-size: 23px;
-  font-weight: bold;
-  cursor: pointer;
+.total{
+  text-align:right;
+  font-size:32px;
+  font-weight:bold;
+  margin:30px 0;
 }
 
-.whatsapp-btn:active {
-  transform: scale(0.98);
+
+/* WHATSAPP BUTTON */
+.whatsappBtn{
+  width:100%;
+  background:#16a34a;
+  color:white;
+  border:none;
+  padding:20px;
+  border-radius:14px;
+  font-size:24px;
+  font-weight:bold;
+  cursor:pointer;
+  margin-bottom:25px;
 }
 
-.empty {
-  text-align: center;
-  padding: 40px 10px;
-  font-size: 22px;
-  color: #666;
+
+/* ORDER FORM */
+.orderForm{
+  border-top:2px solid #eee;
+  padding-top:25px;
 }
 
-footer {
-  margin-top: 50px;
-  padding: 30px;
-  background: #111827;
-  color: white;
-  text-align: center;
+.orderTitle{
+  font-size:30px;
+  margin-bottom:20px;
 }
 
-@media (max-width: 600px) {
+.orderForm input,
+.orderForm textarea{
+  width:100%;
+  padding:18px;
+  margin-bottom:15px;
+  border:2px solid #ddd;
+  border-radius:12px;
+  font-size:18px;
+  font-family:inherit;
+}
 
-  .logo {
-    font-size: 24px;
+.orderForm textarea{
+  min-height:130px;
+  resize:vertical;
+}
+
+.confirmBtn{
+  width:100%;
+  background:#2563eb;
+  color:white;
+  border:none;
+  padding:20px;
+  border-radius:14px;
+  font-size:23px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+
+/* MOBILE */
+@media(max-width:600px){
+
+  header{
+    padding:14px;
   }
 
-  .cart-btn {
-    font-size: 16px;
-    padding: 10px 13px;
+  .logo{
+    font-size:25px;
   }
 
-  .hero h1 {
-    font-size: 30px;
+  .cartBtn{
+    padding:12px 15px;
+    font-size:16px;
   }
 
-  .hero p {
-    font-size: 17px;
+  .hero{
+    padding:40px 15px;
   }
 
-  .cart-box {
-    width: 95%;
-    padding: 18px;
+  .hero h1{
+    font-size:32px;
   }
 
-  .cart-header h2 {
-    font-size: 27px;
+  .hero p{
+    font-size:18px;
   }
 
-  .total {
-    font-size: 27px;
+  .cartBox{
+    width:96%;
+    max-height:94vh;
+    padding:22px;
+    border-radius:25px;
   }
 
-  .whatsapp-btn {
-    font-size: 19px;
+  .cartHeader h2{
+    font-size:30px;
+  }
+
+  .closeBtn{
+    width:55px;
+    height:55px;
+    font-size:28px;
+  }
+
+  .cartItem h3{
+    font-size:23px;
+  }
+
+  .qtyBtn,
+  .deleteBtn{
+    width:58px;
+    height:58px;
+  }
+
+  .total{
+    font-size:30px;
+  }
+
+  .whatsappBtn{
+    font-size:21px;
+  }
+
+  .confirmBtn{
+    font-size:21px;
   }
 }
 </style>
 </head>
 
+
 <body>
 
+
+<!-- HEADER -->
 <header>
 
   <div class="logo">
     🛒 আমার দোকান
   </div>
 
-  <button class="cart-btn" onclick="openCart()">
+  <button class="cartBtn" onclick="openCart()">
     🛒 Cart (<span id="cartCount">0</span>)
   </button>
 
 </header>
 
 
+<!-- HERO -->
 <section class="hero">
 
-  <h1>আমার অনলাইন দোকানে স্বাগতম</h1>
+  <h1>আমার দোকানে স্বাগতম</h1>
 
-  <p>পছন্দের পণ্য কিনুন সহজেই</p>
+  <p>সেরা পণ্য, সেরা দাম</p>
 
 </section>
 
 
-<div class="search-box">
+<!-- SEARCH -->
+<div class="searchBox">
 
   <input
     type="text"
     id="searchInput"
-    placeholder="🔍 পণ্য খুঁজুন..."
+    placeholder="🔎 পণ্য খুঁজুন..."
     oninput="searchProducts()"
   >
 
 </div>
 
 
+<!-- PRODUCTS -->
 <section class="products" id="products">
 
-  <div class="product" data-name="সুন্দর টি-শার্ট">
 
-    <div class="product-img">👕</div>
+  <div class="product">
+
+    <div class="productImage">👕</div>
 
     <h3>সুন্দর টি-শার্ট</h3>
 
     <div class="price">৳500</div>
 
-    <button class="add-btn"
-      onclick="addToCart('সুন্দর টি-শার্ট', 500)">
+    <button class="addBtn"
+      onclick="addToCart('সুন্দর টি-শার্ট',500)">
       🛒 Cart-এ যোগ করুন
     </button>
 
   </div>
 
 
-  <div class="product" data-name="স্টাইলিশ জুতা">
+  <div class="product">
 
-    <div class="product-img">👟</div>
+    <div class="productImage">👟</div>
 
     <h3>স্টাইলিশ জুতা</h3>
 
     <div class="price">৳1200</div>
 
-    <button class="add-btn"
-      onclick="addToCart('স্টাইলিশ জুতা', 1200)">
+    <button class="addBtn"
+      onclick="addToCart('স্টাইলিশ জুতা',1200)">
       🛒 Cart-এ যোগ করুন
     </button>
 
   </div>
 
 
-  <div class="product" data-name="স্মার্ট ঘড়ি">
+  <div class="product">
 
-    <div class="product-img">⌚</div>
+    <div class="productImage">⌚</div>
 
     <h3>স্মার্ট ঘড়ি</h3>
 
     <div class="price">৳1500</div>
 
-    <button class="add-btn"
-      onclick="addToCart('স্মার্ট ঘড়ি', 1500)">
+    <button class="addBtn"
+      onclick="addToCart('স্মার্ট ঘড়ি',1500)">
       🛒 Cart-এ যোগ করুন
     </button>
 
   </div>
 
 
-  <div class="product" data-name="সানগ্লাস">
+  <div class="product">
 
-    <div class="product-img">🕶️</div>
+    <div class="productImage">🕶️</div>
 
     <h3>সানগ্লাস</h3>
 
     <div class="price">৳800</div>
 
-    <button class="add-btn"
-      onclick="addToCart('সানগ্লাস', 800)">
+    <button class="addBtn"
+      onclick="addToCart('সানগ্লাস',800)">
       🛒 Cart-এ যোগ করুন
     </button>
 
   </div>
 
 
-  <div class="product" data-name="ব্যাকপ্যাক">
+  <div class="product">
 
-    <div class="product-img">🎒</div>
+    <div class="productImage">🎒</div>
 
     <h3>ব্যাকপ্যাক</h3>
 
     <div class="price">৳900</div>
 
-    <button class="add-btn"
-      onclick="addToCart('ব্যাকপ্যাক', 900)">
+    <button class="addBtn"
+      onclick="addToCart('ব্যাকপ্যাক',900)">
       🛒 Cart-এ যোগ করুন
     </button>
 
   </div>
 
 
-  <div class="product" data-name="হেডফোন">
+  <div class="product">
 
-    <div class="product-img">🎧</div>
+    <div class="productImage">🎧</div>
 
     <h3>হেডফোন</h3>
 
     <div class="price">৳1100</div>
 
-    <button class="add-btn"
-      onclick="addToCart('হেডফোন', 1100)">
+    <button class="addBtn"
+      onclick="addToCart('হেডফোন',1100)">
       🛒 Cart-এ যোগ করুন
     </button>
 
   </div>
 
 
-  <div class="product" data-name="মোবাইল কভার">
+  <div class="product">
 
-    <div class="product-img">📱</div>
+    <div class="productImage">📱</div>
 
     <h3>মোবাইল কভার</h3>
 
     <div class="price">৳300</div>
 
-    <button class="add-btn"
-      onclick="addToCart('মোবাইল কভার', 300)">
+    <button class="addBtn"
+      onclick="addToCart('মোবাইল কভার',300)">
       🛒 Cart-এ যোগ করুন
     </button>
 
   </div>
 
 
-  <div class="product" data-name="পারফিউম">
+  <div class="product">
 
-    <div class="product-img">🧴</div>
+    <div class="productImage">🌹</div>
 
     <h3>পারফিউম</h3>
 
     <div class="price">৳1000</div>
 
-    <button class="add-btn"
-      onclick="addToCart('পারফিউম', 1000)">
+    <button class="addBtn"
+      onclick="addToCart('পারফিউম',1000)">
       🛒 Cart-এ যোগ করুন
     </button>
 
   </div>
 
+
 </section>
 
 
-<!-- OVERLAY -->
+<!-- FOOTER -->
+<footer>
 
+  © 2026 আমার দোকান
+  <br>
+  সব অধিকার সংরক্ষিত
+
+</footer>
+
+
+<!-- OVERLAY -->
 <div
   class="overlay"
   id="overlay"
@@ -479,15 +567,16 @@ footer {
 
 
 <!-- CART -->
+<div class="cartBox" id="cartBox">
 
-<div class="cart-box" id="cartBox">
 
-  <div class="cart-header">
+  <!-- CART HEADER -->
+  <div class="cartHeader">
 
     <h2>🛒 আপনার কার্ট</h2>
 
     <button
-      class="close-btn"
+      class="closeBtn"
       onclick="closeCart()">
       ×
     </button>
@@ -495,32 +584,71 @@ footer {
   </div>
 
 
+  <!-- CART ITEMS -->
   <div id="cartItems"></div>
 
 
+  <!-- TOTAL -->
   <div class="total">
+
     মোট: ৳<span id="cartTotal">0</span>
+
   </div>
 
 
+  <!-- WHATSAPP ORDER BUTTON -->
   <button
-    class="whatsapp-btn"
-    onclick="orderWhatsApp()">
+    class="whatsappBtn"
+    onclick="showOrderForm()">
 
     📱 WhatsApp-এ অর্ডার করুন
 
   </button>
 
+
+  <!-- ORDER FORM -->
+  <div
+    class="orderForm"
+    id="orderForm"
+    style="display:none;">
+
+    <div class="orderTitle">
+      📦 অর্ডারের তথ্য
+    </div>
+
+
+    <input
+      type="text"
+      id="customerName"
+      placeholder="আপনার নাম"
+    >
+
+
+    <input
+      type="tel"
+      id="customerPhone"
+      placeholder="মোবাইল নম্বর"
+    >
+
+
+    <textarea
+      id="customerAddress"
+      placeholder="আপনার সম্পূর্ণ ঠিকানা"
+    ></textarea>
+
+
+    <button
+      class="confirmBtn"
+      onclick="confirmOrder()">
+
+      ✅ অর্ডার নিশ্চিত করুন
+
+    </button>
+
+  </div>
+
+
 </div>
-
-
-<footer>
-
-  © 2026 আমার দোকান  
-  <br>
-  সব অধিকার সংরক্ষিত
-
-</footer>
 
 
 <script>
@@ -536,29 +664,34 @@ let cart = [];
    ADD TO CART
 ========================= */
 
-function addToCart(name, price) {
+function addToCart(name, price){
 
-  const existing = cart.find(
+  const existingItem = cart.find(
     item => item.name === name
   );
 
-  if (existing) {
 
-    existing.quantity += 1;
+  if(existingItem){
 
-  } else {
+    existingItem.quantity += 1;
+
+  }else{
 
     cart.push({
-      name: name,
-      price: price,
-      quantity: 1
+      name:name,
+      price:price,
+      quantity:1
     });
 
   }
 
+
   updateCart();
 
-  alert(name + " Cart-এ যোগ হয়েছে!");
+
+  alert(
+    name + " Cart-এ যোগ হয়েছে!"
+  );
 
 }
 
@@ -567,7 +700,7 @@ function addToCart(name, price) {
    UPDATE CART
 ========================= */
 
-function updateCart() {
+function updateCart(){
 
   const cartItems =
     document.getElementById("cartItems");
@@ -581,49 +714,45 @@ function updateCart() {
 
   cartItems.innerHTML = "";
 
+
   let total = 0;
   let count = 0;
 
 
-  if (cart.length === 0) {
-
-    cartItems.innerHTML =
-      '<div class="empty">আপনার Cart খালি 🛒</div>';
-
-  }
-
-
-  cart.forEach((item, index) => {
+  cart.forEach((item,index)=>{
 
     const quantity =
       item.quantity || 1;
 
+
     const itemTotal =
       item.price * quantity;
 
-    total += itemTotal;
 
+    total += itemTotal;
     count += quantity;
 
 
     const div =
       document.createElement("div");
 
-    div.className = "cart-item";
+
+    div.className = "cartItem";
 
 
     div.innerHTML = `
 
       <h3>${item.name}</h3>
 
-      <div class="cart-price">
+      <div class="itemPrice">
         ৳${item.price} × ${quantity}
         = ৳${itemTotal}
       </div>
 
-      <div class="quantity-row">
+      <div class="quantityRow">
 
         <button
+          class="qtyBtn"
           onclick="decreaseQuantity(${index})">
           −
         </button>
@@ -633,12 +762,13 @@ function updateCart() {
         </div>
 
         <button
+          class="qtyBtn"
           onclick="increaseQuantity(${index})">
           +
         </button>
 
         <button
-          class="delete-btn"
+          class="deleteBtn"
           onclick="removeFromCart(${index})">
           🗑️
         </button>
@@ -657,14 +787,33 @@ function updateCart() {
 
   cartTotal.textContent = total;
 
+
+  /* যদি Cart খালি হয় */
+
+  if(cart.length === 0){
+
+    cartItems.innerHTML = `
+
+      <div style="
+        text-align:center;
+        padding:40px 10px;
+        font-size:22px;
+      ">
+        🛒 আপনার Cart খালি
+      </div>
+
+    `;
+
+  }
+
 }
 
 
 /* =========================
-   PLUS
+   INCREASE QUANTITY
 ========================= */
 
-function increaseQuantity(index) {
+function increaseQuantity(index){
 
   cart[index].quantity += 1;
 
@@ -674,20 +823,21 @@ function increaseQuantity(index) {
 
 
 /* =========================
-   MINUS
+   DECREASE QUANTITY
 ========================= */
 
-function decreaseQuantity(index) {
+function decreaseQuantity(index){
 
-  if (cart[index].quantity > 1) {
+  if(cart[index].quantity > 1){
 
     cart[index].quantity -= 1;
 
-  } else {
+  }else{
 
-    cart.splice(index, 1);
+    cart.splice(index,1);
 
   }
+
 
   updateCart();
 
@@ -695,12 +845,12 @@ function decreaseQuantity(index) {
 
 
 /* =========================
-   DELETE
+   REMOVE PRODUCT
 ========================= */
 
-function removeFromCart(index) {
+function removeFromCart(index){
 
-  cart.splice(index, 1);
+  cart.splice(index,1);
 
   updateCart();
 
@@ -711,15 +861,23 @@ function removeFromCart(index) {
    OPEN CART
 ========================= */
 
-function openCart() {
+function openCart(){
 
-  document.getElementById("cartBox")
-    .style.display = "block";
+  document.getElementById(
+    "cartBox"
+  ).style.display = "block";
 
-  document.getElementById("overlay")
-    .style.display = "block";
 
-  updateCart();
+  document.getElementById(
+    "overlay"
+  ).style.display = "block";
+
+
+  /* প্রতিবার Cart খুললে Form লুকানো */
+
+  document.getElementById(
+    "orderForm"
+  ).style.display = "none";
 
 }
 
@@ -728,61 +886,27 @@ function openCart() {
    CLOSE CART
 ========================= */
 
-function closeCart() {
+function closeCart(){
 
-  document.getElementById("cartBox")
-    .style.display = "none";
-
-  document.getElementById("overlay")
-    .style.display = "none";
-
-}
+  document.getElementById(
+    "cartBox"
+  ).style.display = "none";
 
 
-/* =========================
-   SEARCH
-========================= */
-
-function searchProducts() {
-
-  const search =
-    document.getElementById("searchInput")
-      .value
-      .toLowerCase();
-
-  const products =
-    document.querySelectorAll(".product");
-
-
-  products.forEach(product => {
-
-    const name =
-      product.dataset.name.toLowerCase();
-
-    if (name.includes(search)) {
-
-      product.style.display = "";
-
-    } else {
-
-      product.style.display = "none";
-
-    }
-
-  });
+  document.getElementById(
+    "overlay"
+  ).style.display = "none";
 
 }
 
 
 /* =========================
-   WHATSAPP ORDER
+   SHOW ORDER FORM
 ========================= */
 
-function orderWhatsApp() {
+function showOrderForm(){
 
-  /* Cart খালি হলে */
-
-  if (cart.length === 0) {
+  if(cart.length === 0){
 
     alert("আপনার Cart খালি!");
 
@@ -791,19 +915,155 @@ function orderWhatsApp() {
   }
 
 
-  /* WhatsApp Message */
+  document.getElementById(
+    "orderForm"
+  ).style.display = "block";
+
+
+  /* ফর্মের দিকে স্ক্রল */
+
+  setTimeout(()=>{
+
+    document.getElementById(
+      "orderForm"
+    ).scrollIntoView({
+      behavior:"smooth"
+    });
+
+  },100);
+
+}
+
+
+/* =========================
+   CONFIRM ORDER
+========================= */
+
+function confirmOrder(){
+
+  /* Cart চেক */
+
+  if(cart.length === 0){
+
+    alert("আপনার Cart খালি!");
+
+    return;
+
+  }
+
+
+  /* Customer information */
+
+  const name =
+    document
+    .getElementById("customerName")
+    .value
+    .trim();
+
+
+  const phone =
+    document
+    .getElementById("customerPhone")
+    .value
+    .trim();
+
+
+  const address =
+    document
+    .getElementById("customerAddress")
+    .value
+    .trim();
+
+
+  /* Name check */
+
+  if(!name){
+
+    alert(
+      "দয়া করে আপনার নাম লিখুন"
+    );
+
+    document
+      .getElementById("customerName")
+      .focus();
+
+    return;
+
+  }
+
+
+  /* Phone check */
+
+  if(!phone){
+
+    alert(
+      "দয়া করে আপনার মোবাইল নম্বর লিখুন"
+    );
+
+    document
+      .getElementById("customerPhone")
+      .focus();
+
+    return;
+
+  }
+
+
+  /* Address check */
+
+  if(!address){
+
+    alert(
+      "দয়া করে আপনার সম্পূর্ণ ঠিকানা লিখুন"
+    );
+
+    document
+      .getElementById("customerAddress")
+      .focus();
+
+    return;
+
+  }
+
+
+  /* =========================
+     CREATE WHATSAPP MESSAGE
+  ========================= */
 
   let message =
-    "🛍️ আমার দোকানে নতুন অর্ডার\n\n";
+    "🛍️ *আমার দোকানে নতুন অর্ডার*\n\n";
+
+
+  message +=
+    "👤 *নাম:* " +
+    name +
+    "\n";
+
+
+  message +=
+    "📱 *মোবাইল:* " +
+    phone +
+    "\n";
+
+
+  message +=
+    "📍 *ঠিকানা:* " +
+    address +
+    "\n\n";
+
+
+  message +=
+    "📦 *অর্ডারের পণ্য:*\n\n";
 
 
   let total = 0;
 
 
-  cart.forEach((item, index) => {
+  cart.forEach((item,index)=>{
 
     const quantity =
       item.quantity || 1;
+
 
     const itemTotal =
       item.price * quantity;
@@ -818,13 +1078,15 @@ function orderWhatsApp() {
       item.name +
       "\n";
 
+
     message +=
-      "পরিমাণ: " +
+      "   পরিমাণ: " +
       quantity +
       "\n";
 
+
     message +=
-      "দাম: ৳" +
+      "   দাম: ৳" +
       itemTotal +
       "\n\n";
 
@@ -832,22 +1094,26 @@ function orderWhatsApp() {
 
 
   message +=
-    "💰 মোট: ৳" +
+    "💰 *মোট: ৳" +
     total +
-    "\n\n";
+    "*\n\n";
 
 
   message +=
-    "📦 অনুগ্রহ করে আমার অর্ডারটি গ্রহণ করুন।";
+    "✅ অনুগ্রহ করে আমার অর্ডারটি গ্রহণ করুন।";
 
 
-  /* আপনার WhatsApp নম্বর */
+  /* =========================
+     WHATSAPP NUMBER
+  ========================= */
 
   const whatsappNumber =
     "966567225245";
 
 
-  /* WhatsApp Link */
+  /* =========================
+     WHATSAPP URL
+  ========================= */
 
   const whatsappURL =
     "https://wa.me/" +
@@ -856,7 +1122,9 @@ function orderWhatsApp() {
     encodeURIComponent(message);
 
 
-  /* মোবাইলে WhatsApp খোলার জন্য */
+  /* =========================
+     OPEN WHATSAPP
+  ========================= */
 
   window.location.href =
     whatsappURL;
@@ -865,7 +1133,51 @@ function orderWhatsApp() {
 
 
 /* =========================
-   START
+   SEARCH PRODUCTS
+========================= */
+
+function searchProducts(){
+
+  const search =
+    document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase()
+    .trim();
+
+
+  const products =
+    document.querySelectorAll(
+      ".product"
+    );
+
+
+  products.forEach(product=>{
+
+    const name =
+      product
+      .querySelector("h3")
+      .textContent
+      .toLowerCase();
+
+
+    if(name.includes(search)){
+
+      product.style.display = "block";
+
+    }else{
+
+      product.style.display = "none";
+
+    }
+
+  });
+
+}
+
+
+/* =========================
+   INITIAL CART
 ========================= */
 
 updateCart();
