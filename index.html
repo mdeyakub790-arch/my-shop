@@ -816,52 +816,72 @@
     }
 
 
-    /* WhatsApp Order */
-    function orderWhatsApp() {
+   /* WhatsApp Order */
+function orderWhatsApp() {
 
-      if (cart.length === 0) {
+  if (cart.length === 0) {
+    alert("আপনার Cart খালি!");
+    return;
+  }
 
-        alert("আপনার কার্ট খালি।");
+  const name = prompt("আপনার নাম লিখুন:");
 
-        return;
+  if (!name) {
+    alert("দয়া করে আপনার নাম লিখুন।");
+    return;
+  }
 
-      }
+  const phone = prompt("আপনার মোবাইল নম্বর লিখুন:");
 
+  if (!phone) {
+    alert("দয়া করে আপনার মোবাইল নম্বর লিখুন।");
+    return;
+  }
 
-      let message =
-        "🛍️ *আমার দোকানে নতুন অর্ডার*%0A%0A";
+  const address = prompt("আপনার সম্পূর্ণ ঠিকানা লিখুন:");
 
+  if (!address) {
+    alert("দয়া করে আপনার সম্পূর্ণ ঠিকানা লিখুন।");
+    return;
+  }
 
-      let total = 0;
+  let message = "🛍️ আমার দোকানে নতুন অর্ডার\n\n";
 
+  message += "👤 নাম: " + name + "\n";
+  message += "📱 মোবাইল: " + phone + "\n";
+  message += "📍 ঠিকানা: " + address + "\n\n";
 
-      cart.forEach((item, index) => {
+  message += "📦 অর্ডারের পণ্য:\n\n";
 
-        const itemTotal =
-          item.price * item.quantity;
+  let total = 0;
 
-        total += itemTotal;
+  cart.forEach((item, index) => {
 
+    const quantity = item.quantity || 1;
+    const itemTotal = item.price * quantity;
 
-        message +=
-          `${index + 1}. ${item.name}%0A` +
-          `পরিমাণ: ${item.quantity}%0A` +
-          `দাম: ৳${itemTotal}%0A%0A`;
+    total += itemTotal;
 
-      });
+    message +=
+      (index + 1) + ". " +
+      item.name +
+      "\nপরিমাণ: " + quantity +
+      "\nদাম: ৳" + itemTotal +
+      "\n\n";
+  });
 
+  message += "💰 মোট: ৳" + total + "\n\n";
+  message += "📦 অনুগ্রহ করে আমার অর্ডারটি গ্রহণ করুন।";
 
-      message +=
-        `💰 *মোট: ৳${total}*%0A%0A` +
-        `📦 অনুগ্রহ করে আমার অর্ডারটি গ্রহণ করুন।`;
+  const whatsappNumber = "966567225245";
 
+  const whatsappURL =
+    "https://wa.me/" +
+    whatsappNumber +
+    "?text=" +
+    encodeURIComponent(message);
 
-      const url =
-        `https://wa.me/${966567225245}?text=${message}`;
-
-
-      window.open(url, "_blank");
-
+  window.open(whatsappURL, "_blank");
     }
 
 
