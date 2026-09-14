@@ -1034,6 +1034,84 @@
 
     /* INITIAL CART */
     updateCart();
+    // WhatsApp Order
+function confirmOrder() {
+    const inputs = document.querySelectorAll('#cartModal input');
+    const textarea = document.querySelector('#cartModal textarea');
+
+    let name = "";
+    let phone = "";
+    let address = "";
+
+    inputs.forEach(input => {
+        const placeholder = input.placeholder || "";
+
+        if (placeholder.includes("নাম")) {
+            name = input.value.trim();
+        } 
+        else if (
+            placeholder.includes("মোবাইল") ||
+            placeholder.includes("ফোন")
+        ) {
+            phone = input.value.trim();
+        }
+    });
+
+    if (textarea) {
+        address = textarea.value.trim();
+    }
+
+    // তথ্য পূরণ করা হয়েছে কিনা
+    if (!name || !phone || !address) {
+        alert("দয়া করে নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা দিন।");
+        return;
+    }
+
+    // Cart খালি কিনা
+    if (cart.length === 0) {
+        alert("আপনার Cart খালি!");
+        return;
+    }
+
+    let message = "🛍️ নতুন অর্ডার\n\n";
+
+    message += "👤 নাম: " + name + "\n";
+    message += "📱 মোবাইল: " + phone + "\n";
+    message += "📍 ঠিকানা: " + address + "\n\n";
+
+    message += "📦 অর্ডারের পণ্য:\n";
+
+    let total = 0;
+
+    cart.forEach((item, index) => {
+        const quantity = item.quantity || 1;
+        const subtotal = item.price * quantity;
+
+        message +=
+            (index + 1) + ". " +
+            item.name +
+            " × " + quantity +
+            " = ৳" + subtotal + "\n";
+
+        total += subtotal;
+    });
+
+    message += "\n💰 মোট: ৳" + total + "\n";
+    message += "\n✅ অর্ডার নিশ্চিত করার জন্য পাঠানো হয়েছে।";
+
+    // =====================================
+    // এখানে আপনার WhatsApp নম্বর দিন
+    // =====================================
+    const whatsappNumber = "966567225245";
+
+    const whatsappURL =
+        "https://wa.me/" +
+        whatsappNumber +
+        "?text=" +
+        encodeURIComponent(message);
+
+    window.open(whatsappURL, "_blank");
+}
 
   </script>
 
