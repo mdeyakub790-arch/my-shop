@@ -1,155 +1,841 @@
-<!doctype html>
+Daraz Clone Full-Stack E-Commerce Application (A to Z)
+এই ফাইলটিতে দারাজের (Daraz) মতো একটি সম্পূর্ণ মাল্টি-ফাংশনাল ই-কমাdaraz-clone/
+├── server/
+│   ├── package.json
+│   ├── .env
+│   ├── server.js
+│   ├── models/
+│   │   ├── Product.js
+│   │   ├── Order.js
+│   │   └── User.js
+│   └── routes/
+│       ├── productRoutes.js
+│       ├── orderRoutes.js
+│       └── userRoutes.js
+└── client/
+    ├── index.html
+    ├── style.css
+    └── app.js
+১. ব্যাকএন্ড ফাইলসমূহ (Backend Files - Node.js + Express + MongoDB)
+server/package.json
+{
+  "name": "daraz-clone-backend",
+  "version": "1.0.0",
+  "description": "Daraz Clone Full Stack Backend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "mongoose": "^7.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
+server/.env
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/daraz_clone_db
+server/models/Product.js
+const mongoose = require('mongoose');
+
+const productSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  originalPrice: { type: Number, required: true },
+  discountPrice: { type: Number, required: true },
+  category: { type: String, required: true },
+  brand: { type: String, default: 'Generic' },
+  stock: { type: Number, default: 10 },
+  rating: { type: Number, default: 4.5 },
+  reviewsCount: { type: Number, default: 12 },
+  image: { type: String, required: true }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Product', productSchema);
+server/models/Order.js
+const mongoose = require('mongoose');
+
+const orderSchema = new mongoose.Schema({
+  customerName: { type: String, required: true },
+  customerPhone: { type: String, required: true },
+  shippingAddress: { type: String, required: true },
+  items: [
+    {
+      productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+      name: String,
+      price: Number,
+      quantity: Number
+    }
+  ],
+  totalAmount: { type: Number, required: true },
+  paymentMethod: { type: String, default: 'Cash on Delivery' },
+  orderStatus: { type: String, default: 'Pending' }
+}, { timestamps: true });
+
+module.exports = mongoose.model('Order', orderSchema);
+server/server.js
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
+
+const Product = require('./models/Product');
+const Order = require('./models/Order');
+
+const app = express();
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Database Connection
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/daraz_clone_db';
+mongoose.connect(MONGO_URI)
+  .then(() => console.log('✅ MongoDB Connected Successfully'))
+  .catch((err) => console.error('❌ MongoDB Connection Error:', err));
+
+// Initial Seed Route (ডেটাবেসে প্রাথমিক প্রোডাক্ট যোগ করার জন্য)
+app.get('/api/seed', async (req, res) => {
+  try {
+    await Product.deleteMany({});
+    const sampleProducts = [
+      {
+        name: "Wireless Bluetooth Headphones with Noise Cancellation",
+        description: "High quality deep bass bluetooth headphones with long battery backup.",
+        originalPrice: 1800,
+        discountPrice: 950,
+        category: "Electronics",
+        brand: "SoundPro",
+        stock: 25,
+        rating: 4.7,
+        reviewsCount: 84,
+        image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80"
+      },
+      {
+        name: "Smart Watch Series 8 Ultra - Orange Strap",
+        description: "Fitness tracker watch with heart rate monitor, sleep tracking and AMOLED display.",
+        originalPrice: 3200,
+        discountPrice: 1650,
+        category: "Wearables",
+        brand: "FitTech",
+        stock: 15,
+        rating: 4.8,
+        reviewsCount: 120,
+        image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=80"
+      },
+      {
+        name: "Ergonomic Gaming Mouse with RGB Lighting",
+        description: "High DPI optical gaming mouse for ultra fast gaming performance.",
+        originalPrice: 1200,
+        discountPrice: 650,
+        category: "Computers",
+        brand: "ProGamer",
+        stock: 40,
+        rating: 4.5,
+        reviewsCount: 45,
+        image: "https://images.unsplash.com/photo-1527864550417-7fd91fc51a46?w=500&q=80"
+      },
+      {
+        name: "Stylish Casual Canvas Backpack for Men & Women",
+        description: "Durable waterproof laptop backpack suitable for university and travel.",
+        originalPrice: 2200,
+        discountPrice: 1100,
+        category: "Fashion",
+        brand: "Traveler",
+        stock: 30,
+        rating: 4.6,
+        reviewsCount: 62,
+        image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=80"
+      }
+    ];
+    const createdProducts = await Product.insertMany(sampleProducts);
+    res.json({ message: "Database Seeded!", products: createdProducts });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ১. সকল প্রোডাক্ট পাওয়ার API (GET)
+app.get('/api/products', async (req, res) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 });
+    res.json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Server error fetching products", error: error.message });
+  }
+});
+
+// ২. একক প্রোডাক্ট ডিটেইলস API (GET)
+app.get('/api/products/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+    res.json(product);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching product details", error: error.message });
+  }
+});
+
+// ৩. নতুন অর্ডার প্লেস করার API (POST)
+app.post('/api/orders', async (req, res) => {
+  try {
+    const { customerName, customerPhone, shippingAddress, items, totalAmount, paymentMethod } = req.body;
+    
+    if (!items || items.length === 0) {
+      return res.status(400).json({ message: "Cart is empty" });
+    }
+
+    const newOrder = new Order({
+      customerName,
+      customerPhone,
+      shippingAddress,
+      items,
+      totalAmount,
+      paymentMethod: paymentMethod || 'Cash on Delivery'
+    });
+
+    const savedOrder = await newOrder.save();
+    res.status(201).json({
+      success: true,
+      message: "Order placed successfully!",
+      orderId: savedOrder._id,
+      order: savedOrder
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to place order", error: error.message });
+  }
+});
+
+// ৪. নতুন প্রোডাক্ট অ্যাড করার এডমিন API (POST)
+app.post('/api/products', async (req, res) => {
+  try {
+    const newProduct = new Product(req.body);
+    const saved = await newProduct.save();
+    res.status(201).json(saved);
+  } catch (error) {
+    res.status(400).json({ message: "Failed to add product", error: error.message });
+  }
+});
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`🚀 Server listening on http://localhost:${PORT}`);
+});
+২. ফ্রন্টএন্ড ফাইলসমূহ (Frontend - Responsive UI)
+client/index.html
+<!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>আমার দোকান | অনলাইন শপ</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,"Noto Sans Bengali",sans-serif;background:#f4f5f8;color:#222;padding-bottom:65px}
-a{text-decoration:none}.top{background:#0b1730;color:#fff;position:sticky;top:0;z-index:20}.bar{max-width:1200px;margin:auto;padding:10px 14px;display:flex;gap:10px;align-items:center}.logo{font-size:25px;font-weight:900;white-space:nowrap}.logo i{font-style:normal;font-size:32px}
-.search{flex:1;height:44px;background:#fff;border-radius:24px;display:flex;overflow:hidden}.search input{flex:1;border:0;outline:0;padding:0 15px;font-size:16px}.search button{border:0;background:#f85606;color:#fff;padding:0 20px;font-weight:800}.cart{border:0;background:#2874f0;color:#fff;border-radius:11px;padding:12px 16px;font-size:16px;font-weight:800}
-.wrap{max-width:1200px;margin:auto;padding:12px}.banner{border-radius:16px;min-height:175px;padding:25px;background:linear-gradient(110deg,#f85606,#ff8a00);color:#fff;display:flex;align-items:center;justify-content:space-between;box-shadow:0 5px 18px #f8560630}.banner h1{font-size:32px;margin:0 0 8px}.banner p{margin:0;font-size:17px}.banner strong{font-size:48px}
-.cats{display:flex;gap:8px;overflow:auto;padding:12px 0;scrollbar-width:none}.cats::-webkit-scrollbar{display:none}.cat{border:0;background:#fff;border-radius:20px;padding:10px 16px;white-space:nowrap;font-weight:700}.cat.active{background:#f85606;color:#fff}
-.title{display:flex;justify-content:space-between;align-items:center;margin:6px 0 12px}.title h2{margin:0}.page{color:#f85606;font-weight:800}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:#fff;border-radius:14px;padding:10px;box-shadow:0 2px 9px #0001;position:relative}.pic{height:145px;border-radius:10px;background:linear-gradient(135deg,#fff1e8,#eef3ff);display:flex;align-items:center;justify-content:center;font-size:70px}.badge{position:absolute;top:17px;left:17px;background:#f85606;color:#fff;border-radius:4px;padding:3px 6px;font-size:11px}.card h3{font-size:16px;margin:9px 2px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.price{color:#f85606;font-size:20px;font-weight:900;margin-bottom:8px}.old{color:#999;text-decoration:line-through;font-size:12px}.add{width:100%;border:0;background:#f85606;color:#fff;border-radius:8px;padding:10px;font-weight:800;font-size:14px}
-footer{margin-top:25px;background:#0b1730;color:#fff;text-align:center;padding:25px}.bottom{position:fixed;bottom:0;left:0;right:0;height:65px;background:#fff;border-top:1px solid #ddd;z-index:30;display:flex;justify-content:space-around;align-items:center}.bottom button,.bottom a{border:0;background:none;text-align:center;font-size:12px;color:#333}.bottom b{display:block;font-size:22px}
-.overlay{display:none;position:fixed;inset:0;background:#0008;z-index:100;padding:12px;overflow:auto}.modal{max-width:700px;margin:15px auto;background:#fff;border-radius:20px;overflow:hidden}.mh{background:#0b1730;color:#fff;padding:16px;display:flex;justify-content:space-between;align-items:center}.mh h2{margin:0}.close{width:42px;height:42px;border:0;border-radius:50%;background:#f44336;color:#fff;font-size:25px}.mb{padding:15px}.item{display:flex;align-items:center;gap:8px;padding:12px 0;border-bottom:1px solid #eee}.ico{font-size:38px;width:50px}.info{flex:1}.info h3{margin:0 0 4px}.ip{color:#f85606;font-weight:800}.qty{display:flex;align-items:center;gap:7px}.qty button{width:34px;height:34px;border:0;border-radius:7px;background:#2874f0;color:#fff;font-size:20px}.del{border:0;background:#f44336;color:#fff;border-radius:7px;padding:8px}.total{text-align:right;font-size:25px;font-weight:900;padding:17px 0}.form{border-top:1px solid #ddd;padding-top:15px}.form h3{margin:0 0 10px;font-size:21px}.form input,.form textarea{width:100%;padding:13px;border:1px solid #ccc;border-radius:9px;font-size:16px;margin-bottom:9px}.form textarea{min-height:90px}.wa{width:100%;border:0;background:#19a44a;color:#fff;padding:15px;border-radius:10px;font-size:18px;font-weight:900}.hint{text-align:center;color:#777;font-size:12px;margin-top:7px}
-@media(max-width:700px){.bar{flex-wrap:wrap}.logo{font-size:20px}.logo i{font-size:27px}.search{order:3;flex-basis:100%}.cart{font-size:14px;padding:11px}.banner{min-height:135px;padding:18px}.banner h1{font-size:24px}.banner strong{font-size:32px}.banner p{font-size:13px}.grid{grid-template-columns:repeat(2,1fr);gap:8px}.pic{height:125px;font-size:60px}.card h3{font-size:14px}.price{font-size:18px}.add{font-size:12px;padding:9px}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daraz Online Shopping Clone</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-<header class="top"><div class="bar">
-<a class="logo" href="#"><i>🛒</i> আমার দোকান</a>
-<div class="search"><input id="search" placeholder="🔎 পণ্য খুঁজুন..." oninput="render()"><button onclick="render()">খুঁজুন</button></div>
-<button class="cart" onclick="openCart()">🛒 Cart (<span id="count">0</span>)</button>
-</div></header>
 
-<main class="wrap">
-<div class="banner"><div><h1>সেরা পণ্য, সেরা দাম</h1><p>দ্রুত অর্ডার • WhatsApp যোগাযোগ • ঘরে বসে কেনাকাটা</p></div><strong>SALE<br>৫০+</strong></div>
-<div class="cats" id="cats"></div>
-<div class="title"><h2 id="ttl">🔥 জনপ্রিয় পণ্য</h2><a class="page" href="https://www.facebook.com/profile.php?id=61594248275340" target="_blank">আমার পেইজ →</a></div>
-<div class="grid" id="products"></div>
-</main>
+  <!-- Top Announcement Bar -->
+  <div class="top-bar">
+    <div class="container top-bar-content">
+      <span>Save More on App | Sell on Daraz | Customer Care | Track My Order</span>
+    </div>
+  </div>
 
-<footer><h2>🛒 আমার দোকান</h2><p>ভালো পণ্য • ন্যায্য দাম • দ্রুত যোগাযোগ</p><p>© 2026 আমার দোকান</p></footer>
+  <!-- Main Header -->
+  <header class="header">
+    <div class="container header-container">
+      <div class="logo">Daraz<span>BD</span></div>
+      
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Search in Daraz...">
+        <button id="searchBtn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </div>
 
-<nav class="bottom">
-<a href="#"><b>🏠</b>হোম</a>
-<button onclick="document.getElementById('cats').scrollIntoView({behavior:'smooth'})"><b>☰</b>ক্যাটাগরি</button>
-<button onclick="openCart()"><b>🛒</b>Cart</button>
-<a href="https://www.facebook.com/profile.php?id=61594248275340" target="_blank"><b>👤</b>পেইজ</a>
-</nav>
+      <div class="header-actions">
+        <button class="cart-btn" id="openCartBtn">
+          <i class="fa-solid fa-cart-shopping"></i>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
 
-<div class="overlay" id="overlay" onclick="if(event.target===this)closeCart()"><div class="modal">
-<div class="mh"><h2>🛒 আপনার কার্ট</h2><button class="close" onclick="closeCart()">×</button></div>
-<div class="mb"><div id="items"></div><div class="total">মোট: ৳<span id="total">0</span></div>
-<div class="form"><h3>📦 অর্ডারের তথ্য</h3>
-<input id="name" placeholder="আপনার নাম"><input id="phone" type="tel" placeholder="মোবাইল নম্বর"><textarea id="address" placeholder="আপনার সম্পূর্ণ ঠিকানা"></textarea>
-<button class="wa" onclick="orderWhatsApp()">📱 WhatsApp-এ অর্ডার করুন</button>
-<div class="hint">নাম, মোবাইল ও ঠিকানা লিখে বাটনে চাপুন। অর্ডারের সব তথ্য WhatsApp-এ যাবে।</div>
-</div></div></div></div>
+  <!-- Hero Banner -->
+  <section class="banner-section">
+    <div class="container">
+      <div class="banner">
+        <h2>🔥 Daraz Mega Flash Sale 50% OFF!</h2>
+        <p>Best Deals in Electronics, Fashion & Accessories</p>
+      </div>
+    </div>
+  </section>
 
-<script>
-const products = [
-  {id:1,name:'সুন্দর টি-শার্ট',price:500,icon:'👕',cat:'ফ্যাশন'},
-  {id:2,name:'স্টাইলিশ জুতা',price:1200,icon:'👟',cat:'ফ্যাশন'},
-  {id:3,name:'স্মার্ট ঘড়ি',price:1500,icon:'⌚',cat:'ইলেকট্রনিক্স'},
-  {id:4,name:'সানগ্লাস',price:800,icon:'🕶️',cat:'ফ্যাশন'},
-  {id:5,name:'ব্যাকপ্যাক',price:900,icon:'🎒',cat:'ফ্যাশন'},
-  {id:6,name:'হেডফোন',price:1100,icon:'🎧',cat:'ইলেকট্রনিক্স'},
-  {id:7,name:'মোবাইল কভার',price:300,icon:'📱',cat:'মোবাইল'},
-  {id:8,name:'পারফিউম',price:1000,icon:'🧴',cat:'বিউটি'},
-  {id:9,name:'ওয়্যারলেস ইয়ারবাড',price:1300,icon:'🎧',cat:'ইলেকট্রনিক্স'},
-  {id:10,name:'পাওয়ার ব্যাংক',price:1200,icon:'🔋',cat:'ইলেকট্রনিক্স'},
-  {id:11,name:'ব্লুটুথ স্পিকার',price:1400,icon:'🔊',cat:'ইলেকট্রনিক্স'},
-  {id:12,name:'স্মার্ট ব্যান্ড',price:950,icon:'⌚',cat:'ইলেকট্রনিক্স'},
-  {id:13,name:'চার্জার',price:450,icon:'🔌',cat:'মোবাইল'},
-  {id:14,name:'ডাটা কেবল',price:250,icon:'🔗',cat:'মোবাইল'},
-  {id:15,name:'মিনি ট্রাইপড',price:650,icon:'📷',cat:'ইলেকট্রনিক্স'},
-  {id:16,name:'রিং লাইট',price:900,icon:'💡',cat:'ইলেকট্রনিক্স'},
-  {id:17,name:'ল্যাপটপ ব্যাগ',price:1300,icon:'💼',cat:'ফ্যাশন'},
-  {id:18,name:'মানিব্যাগ',price:550,icon:'👛',cat:'ফ্যাশন'},
-  {id:19,name:'বেল্ট',price:450,icon:'🧷',cat:'ফ্যাশন'},
-  {id:20,name:'ক্যাপ',price:350,icon:'🧢',cat:'ফ্যাশন'},
-  {id:21,name:'কিচেন অর্গানাইজার',price:700,icon:'🍱',cat:'হোম'},
-  {id:22,name:'পানির বোতল',price:500,icon:'🍼',cat:'হোম'},
-  {id:23,name:'কফি মগ',price:350,icon:'☕',cat:'হোম'},
-  {id:24,name:'টেবিল ল্যাম্প',price:850,icon:'💡',cat:'হোম'},
-  {id:25,name:'বেডশিট',price:1200,icon:'🛏️',cat:'হোম'},
-  {id:26,name:'কুশন সেট',price:650,icon:'🛋️',cat:'হোম'},
-  {id:27,name:'স্টোরেজ বক্স',price:600,icon:'📦',cat:'হোম'},
-  {id:28,name:'ননস্টিক প্যান',price:1500,icon:'🍳',cat:'হোম'},
-  {id:29,name:'কাটিং বোর্ড',price:450,icon:'🪵',cat:'হোম'},
-  {id:30,name:'ড্রেসিং মিরর',price:1100,icon:'🪞',cat:'হোম'},
-  {id:31,name:'ফেস ওয়াশ',price:400,icon:'🧴',cat:'বিউটি'},
-  {id:32,name:'ময়েশ্চারাইজার',price:650,icon:'🧴',cat:'বিউটি'},
-  {id:33,name:'সানস্ক্রিন',price:750,icon:'🌞',cat:'বিউটি'},
-  {id:34,name:'লিপ বাম',price:250,icon:'💄',cat:'বিউটি'},
-  {id:35,name:'হেয়ার ড্রায়ার',price:1200,icon:'💨',cat:'বিউটি'},
-  {id:36,name:'হেয়ার ব্রাশ',price:300,icon:'🪮',cat:'বিউটি'},
-  {id:37,name:'মেকআপ ব্যাগ',price:500,icon:'👜',cat:'বিউটি'},
-  {id:38,name:'বডি স্প্রে',price:700,icon:'🌸',cat:'বিউটি'},
-  {id:39,name:'কিচেন স্কেল',price:800,icon:'⚖️',cat:'হোম'},
-  {id:40,name:'ইলেকট্রিক কেটলি',price:1350,icon:'🫖',cat:'হোম'},
-  {id:41,name:'মিনি ফ্যান',price:750,icon:'🌀',cat:'ইলেকট্রনিক্স'},
-  {id:42,name:'USB হাব',price:550,icon:'🔌',cat:'ইলেকট্রনিক্স'},
-  {id:43,name:'মাউস',price:500,icon:'🖱️',cat:'ইলেকট্রনিক্স'},
-  {id:44,name:'কীবোর্ড',price:950,icon:'⌨️',cat:'ইলেকট্রনিক্স'},
-  {id:45,name:'ল্যাপটপ স্ট্যান্ড',price:850,icon:'💻',cat:'ইলেকট্রনিক্স'},
-  {id:46,name:'গেমিং মাউস',price:900,icon:'🎮',cat:'ইলেকট্রনিক্স'},
-  {id:47,name:'মোবাইল স্ট্যান্ড',price:350,icon:'📱',cat:'মোবাইল'},
-  {id:48,name:'সেলফি স্টিক',price:600,icon:'🤳',cat:'মোবাইল'},
-  {id:49,name:'কার চার্জার',price:500,icon:'🚗',cat:'মোবাইল'},
-  {id:50,name:'মোবাইল ওয়ালেট',price:400,icon:'📱',cat:'মোবাইল'},
-  {id:51,name:'বাচ্চাদের খেলনা গাড়ি',price:650,icon:'🚗',cat:'বাচ্চাদের'},
-  {id:52,name:'বিল্ডিং ব্লক',price:900,icon:'🧱',cat:'বাচ্চাদের'},
-  {id:53,name:'টেডি বিয়ার',price:800,icon:'🧸',cat:'বাচ্চাদের'},
-  {id:54,name:'স্কুল ব্যাগ',price:850,icon:'🎒',cat:'বাচ্চাদের'},
-  {id:55,name:'পাজল গেম',price:450,icon:'🧩',cat:'বাচ্চাদের'},
-  {id:56,name:'ফুটবল',price:700,icon:'⚽',cat:'স্পোর্টস'},
-  {id:57,name:'ব্যাডমিন্টন র\u200d্যাকেট',price:1200,icon:'🏸',cat:'স্পোর্টস'},
-  {id:58,name:'যোগা ম্যাট',price:900,icon:'🧘',cat:'স্পোর্টস'},
-  {id:59,name:'স্পোর্টস বোতল',price:500,icon:'🥤',cat:'স্পোর্টস'}
-];
-let cart=[], selected="সব";
+  <!-- Products Section -->
+  <main class="main-content container">
+    <h2 class="section-title">Flash Sale Products</h2>
+    <div class="product-grid" id="productGrid">
+      <div class="loading">Loading products...</div>
+    </div>
+  </main>
 
-function money(n){return Number(n).toLocaleString("bn-BD")}
-function categories(){
- const a=["সব",...new Set(products.map(p=>p.cat))];
- document.getElementById("cats").innerHTML=a.map(c=>`<button class="cat ${c===selected?"active":""}" onclick="selectCat('${c}')">${c==="সব"?"🏠":"🛍️"} ${c}</button>`).join("");
+  <!-- Cart Modal / Sidebar -->
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-content">
+      <div class="cart-header">
+        <h3>My Shopping Cart</h3>
+        <span class="close-btn" id="closeCartBtn">&times;</span>
+      </div>
+
+      <div class="cart-body" id="cartItemsContainer">
+        <p class="empty-cart">Your cart is empty.</p>
+      </div>
+
+      <div class="cart-footer">
+        <div class="total-row">
+          <span>Total:</span>
+          <span id="cartTotalAmount">৳0</span>
+        </div>
+
+        <form id="checkoutForm" class="checkout-form">
+          <h4>Checkout Information</h4>
+          <input type="text" id="custName" placeholder="Full Name" required>
+          <input type="tel" id="custPhone" placeholder="Mobile Phone Number" required>
+          <textarea id="custAddress" placeholder="Delivery Address" required rows="2"></textarea>
+          
+          <button type="submit" class="checkout-btn">PLACE ORDER NOW</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <p>&copy; 2026 Daraz Clone E-Commerce Platform. Built with Node.js, Express, MongoDB & JS.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
+client/style.css
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
-function selectCat(c){selected=c;document.getElementById("ttl").textContent=c==="সব"?"🔥 জনপ্রিয় পণ্য":"🛍️ "+c;categories();render()}
-function render(){
- const q=document.getElementById("search").value.toLowerCase().trim();
- const list=products.filter(p=>(selected==="সব"||p.cat===selected)&&p.name.toLowerCase().includes(q));
- document.getElementById("products").innerHTML=list.length?list.map(p=>`
- <div class="card"><span class="badge">জনপ্রিয়</span><div class="pic">${p.icon}</div>
- <h3>${p.name}</h3><div class="price">৳${money(p.price)} <span class="old">৳${money(Math.round(p.price*1.25))}</span></div>
- <button class="add" onclick="add(${p.id})">🛒 Cart-এ যোগ করুন</button></div>`).join(""):`<div style="grid-column:1/-1;text-align:center;background:#fff;padding:40px;border-radius:12px">😔 কোনো পণ্য পাওয়া যায়নি</div>`;
-}
-function add(id){const p=products.find(x=>x.id===id),f=cart.find(x=>x.id===id);f?f.quantity++:cart.push({...p,quantity:1});update()}
-function update(){
- document.getElementById("count").textContent=cart.reduce((s,x)=>s+x.quantity,0);
- let total=0;
- document.getElementById("items").innerHTML=cart.length?cart.map(x=>{let sub=x.price*x.quantity;total+=sub;return`
- <div class="item"><div class="ico">${x.icon}</div><div class="info"><h3>${x.name}</h3><div class="ip">৳${money(x.price)} × ${x.quantity} = ৳${money(sub)}</div></div>
- <div class="qty"><button onclick="qty(${x.id},-1)">−</button><b>${x.quantity}</b><button onclick="qty(${x.id},1)">+</button></div><button class="del" onclick="removeItem(${x.id})">🗑️</button></div>`}).join(""):`<div style="text-align:center;padding:30px">🛒 আপনার Cart খালি</div>`;
- document.getElementById("total").textContent=money(total);
-}
-function qty(id,d){let x=cart.find(a=>a.id===id);if(!x)return;x.quantity+=d;if(x.quantity<1)cart=cart.filter(a=>a.id!==id);update()}
-function removeItem(id){cart=cart.filter(x=>x.id!==id);update()}
-function openCart(){document.getElementById("overlay").style.display="block";update()}
-function closeCart(){document.getElementById("overlay").style.display="none"}
 
-function orderWhatsApp(){
- if(!cart.length){alert("আপনার Cart খালি!");return}
- const name=document.getElementById("name").value.trim(),phone=document.getElementById("phone").value.trim(),address=document.getElementById("address").value.trim();
- if(!name||!phone||!address){alert("দয়া করে নাম, মোবাইল নম্বর ও সম্পূর্ণ ঠিকানা দিন");return}
- let msg="🛍️ নতুন অর্ডার - আমার দোকান\n\n👤 নাম: "+name+"\n📱 মোবাইল: "+phone+"\n📍 ঠিকানা: "+address+"\n\n📦 অর্ডারের পণ্য:\n",total=0;
- cart.forEach((x,i)=>{let sub=x.price*x.quantity;total+=sub;msg+=(i+1)+". "+x.name+" × "+x.quantity+" = ৳"+sub+"\n"});
- msg+="\n💰 মোট: ৳"+total+"\n\n✅ অর্ডারটি গ্রহণ করার অনুরোধ করছি।";
- const whatsappNumber="966567225245";
- window.location.href="https://wa.me/"+whatsappNumber+"?text="+encodeURIComponent(msg);
+body {
+  background-color: #f5f5f5;
+  color: #212121;
 }
-categories();render();update();
-</script>
-</body></html>
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}
+
+/* Top Bar */
+.top-bar {
+  background-color: #f7f7f7;
+  font-size: 12px;
+  color: #666;
+  padding: 6px 0;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.top-bar-content {
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* Header */
+.header {
+  background-color: #f57224;
+  padding: 15px 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: #fff;
+  font-style: italic;
+  letter-spacing: -1px;
+}
+
+.logo span {
+  color: #26abd5;
+  font-style: normal;
+}
+
+.search-box {
+  display: flex;
+  flex: 1;
+  max-width: 600px;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 2px 0 0 2px;
+  outline: none;
+  font-size: 14px;
+}
+
+.search-box button {
+  background-color: #d05206;
+  border: none;
+  color: white;
+  padding: 0 20px;
+  cursor: pointer;
+  border-radius: 0 2px 2px 0;
+}
+
+.cart-btn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  position: relative;
+}
+
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background-color: #26abd5;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 50%;
+}
+
+/* Banner */
+.banner-section {
+  margin: 20px 0;
+}
+
+.banner {
+  background: linear-gradient(135deg, #f57224, #ff9100);
+  color: white;
+  padding: 30px;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.banner h2 {
+  font-size: 26px;
+  margin-bottom: 5px;
+}
+
+/* Main Content */
+.main-content {
+  margin-bottom: 40px;
+}
+
+.section-title {
+  font-size: 20px;
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.product-card {
+  background-color: #fff;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.product-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #212121;
+  line-height: 1.4;
+  height: 36px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 5px;
+}
+
+.discount-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #f57224;
+}
+
+.original-price {
+  font-size: 12px;
+  color: #9e9e9e;
+  text-decoration: line-through;
+}
+
+.rating {
+  font-size: 11px;
+  color: #faca51;
+  margin-bottom: 12px;
+}
+
+.add-cart-btn {
+  margin-top: auto;
+  background-color: #26abd5;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 600;
+  width: 100%;
+  transition: background-color 0.2s;
+}
+
+.add-cart-btn:hover {
+  background-color: #1f8dae;
+}
+
+/* Cart Modal */
+.cart-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 1000;
+  justify-content: flex-end;
+}
+
+.cart-modal.active {
+  display: flex;
+}
+
+.cart-content {
+  background: white;
+  width: 100%;
+  max-width: 420px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 10px;
+}
+
+.close-btn {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.cart-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px 0;
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+}
+
+.cart-item-title {
+  font-size: 13px;
+  width: 60%;
+}
+
+.cart-item-price {
+  font-weight: bold;
+  color: #f57224;
+}
+
+.cart-footer {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.checkout-form input, .checkout-form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.checkout-btn {
+  width: 100%;
+  background-color: #f57224;
+  color: white;
+  border: none;
+  padding: 12px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.checkout-btn:hover {
+  background-color: #d05206;
+}
+
+/* Footer */
+.footer {
+  background-color: #2e2e54;
+  color: #fff;
+  text-align: center;
+  padding: 20px 0;
+  font-size: 13px;
+}
+client/app.js
+const API_URL = 'http://localhost:5000/api';
+
+let products = [];
+let cart = [];
+
+// DOM Elements
+const productGrid = document.getElementById('productGrid');
+const cartModal = document.getElementById('cartModal');
+const openCartBtn = document.getElementById('openCartBtn');
+const closeCartBtn = document.getElementById('closeCartBtn');
+const cartCount = document.getElementById('cartCount');
+const cartItemsContainer = document.getElementById('cartItemsContainer');
+const cartTotalAmount = document.getElementById('cartTotalAmount');
+const checkoutForm = document.getElementById('checkoutForm');
+
+// 1. Fetch Products from Backend
+async function loadProducts() {
+  try {
+    const res = await fetch(`${API_URL}/products`);
+    products = await res.json();
+    
+    if (products.length === 0) {
+      // If DB is empty, run seed automatically
+      await fetch(`${API_URL}/seed`);
+      const seedRes = await fetch(`${API_URL}/products`);
+      products = await seedRes.json();
+    }
+    
+    renderProducts(products);
+  } catch (error) {
+    console.error('Error loading products:', error);
+    productGrid.innerHTML = `<p style="color:red;">Error connecting to server. Make sure Node.js server is running on port 5000.</p>`;
+  }
+}
+
+// 2. Render Products HTML
+function renderProducts(items) {
+  productGrid.innerHTML = items.map(p => `
+    <div class="product-card">
+      <img src="${p.image}" alt="${p.name}" class="product-image">
+      <div class="product-info">
+        <div class="product-title">${p.name}</div>
+        <div class="price-row">
+          <span class="discount-price">৳${p.discountPrice}</span>
+          <span class="original-price">৳${p.originalPrice}</span>
+        </div>
+        <div class="rating">★ ${p.rating} (${p.reviewsCount})</div>
+        <button class="add-cart-btn" onclick="addToCart('${p._id}')">Add To Cart</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// 3. Add to Cart Function
+window.addToCart = function(productId) {
+  const item = products.find(p => p._id === productId);
+  if (item) {
+    cart.push(item);
+    updateCartUI();
+    openCart();
+  }
+};
+
+// 4. Update Cart UI
+function updateCartUI() {
+  cartCount.innerText = cart.length;
+  
+  if (cart.length === 0) {
+    cartItemsContainer.innerHTML = `<p class="empty-cart">Your cart is empty.</p>`;
+    cartTotalAmount.innerText = '৳0';
+    return;
+  }
+
+  const total = cart.reduce((sum, item) => sum + item.discountPrice, 0);
+  cartTotalAmount.innerText = `৳${total}`;
+
+  cartItemsContainer.innerHTML = cart.map((item, index) => `
+    <div class="cart-item">
+      <div class="cart-item-title">${item.name}</div>
+      <div class="cart-item-price">৳${item.discountPrice}</div>
+      <button style="color:red; border:none; background:none; cursor:pointer;" onclick="removeFromCart(${index})">&times;</button>
+    </div>
+  `).join('');
+}
+
+// 5. Remove Item from Cart
+window.removeFromCart = function(index) {
+  cart.splice(index, 1);
+  updateCartUI();
+};
+
+// 6. Modal Open/Close Controls
+function openCart() { cartModal.classList.add('active'); }
+function closeCart() { cartModal.classList.remove('active'); }
+
+openCartBtn.addEventListener('click', openCart);
+closeCartBtn.addEventListener('click', closeCart);
+
+// 7. Handle Checkout Form Submit
+checkoutForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  
+  if (cart.length === 0) {
+    alert('Please add products to your cart first.');
+    return;
+  }
+
+  const name = document.getElementById('custName').value;
+  const phone = document.getElementById('custPhone').value;
+  const address = document.getElementById('custAddress').value;
+  const totalAmount = cart.reduce((sum, item) => sum + item.discountPrice, 0);
+
+  const orderPayload = {
+    customerName: name,
+    customerPhone: phone,
+    shippingAddress: address,
+    items: cart.map(item => ({
+      productId: item._id,
+      name: item.name,
+      price: item.discountPrice,
+      quantity: 1
+    })),
+    totalAmount: totalAmount,
+    paymentMethod: 'Cash on Delivery'
+  };
+
+  try {
+    const res = await fetch(`${API_URL}/orders`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderPayload)
+    });
+
+    const data = await res.json();
+
+    if (data.success) {
+      alert(`🎉 Order Success!
+Order ID: ${data.orderId}
+We will contact you soon.`);
+      cart = [];
+      updateCartUI();
+      checkoutForm.reset();
+      closeCart();
+    } else {
+      alert('Order failed: ' + data.message);
+    }
+  } catch (error) {
+    console.error('Checkout error:', error);
+    alert('An error occurred during checkout.');
+  }
+});
+
+// Initialize
+loadProducts();
+৩. পিসিতে অটোমেটিক ফাইল বানিয়ে চালু করার সহজ উপায় (Automated Setup Script)
+আপনার পিসিতে এক ক্লিকে সম্পূর্ণ ফোল্ডার এবং ফাইলগুলো তৈরি করতে একটি setup.js ফাইল বানিয়ে টেস্ট করতে পারেন:
+setup.js
+const fs = require('fs');
+const path = require('path');
+
+const projectDir = path.join(__dirname, 'daraz-clone');
+const serverDir = path.join(projectDir, 'server');
+const clientDir = path.join(projectDir, 'client');
+const modelsDir = path.join(serverDir, 'models');
+
+// Create directories
+[projectDir, serverDir, clientDir, modelsDir].forEach(dir => {
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+});
+
+console.log('✅ Project folders created successfully!');
+console.log('Follow the above files code to populate your project.');
+৪. প্রজেক্ট চালু করার নিয়ম (How to Run)
+১. ব্যাকএন্ড চালু করা:
+daraz-clone/server ফোল্ডারে ঢুকুন।
+কমান্ড চালান: npm install
+এরপর ব্যাকএন্ড সার্ভার চালু করতে দিন: npm start (এটি Port 5000 এ রান হবে)।
+২. ডেটাবেস চেক:
+আপনার পিসিতে MongoDB চালু থাকতে হবে।
+ব্রাউজারে http://localhost:5000/api/seed হিট করলে অটোমেটিক স্যাম্পল প্রোডাক্ট ডেটাবেসে যোগ হয়ে যাবে।
+৩. ফ্রন্টএন্ড চালু করা:
+daraz-clone/client/index.html ফাইলটি যেকোনো ব্রাউজারে ওপেন করুন অথবা VS Code এর Live Server দিয়ে ওপেন করুন।
+সম্পূর্ণ ওয়েবসাইটটি লাইভ দারাজের মতো প্রোডাক্ট লোড করবে এবং কার্টে যোগ করে ক্যাশ অন ডেলিভারিতে অর্ডার কনফার্ম করতে পারবে!
