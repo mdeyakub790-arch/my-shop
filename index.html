@@ -1,52 +1,45 @@
-<!doctype html>
-<html lang="bn">
-<head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#061923"><meta name="description" content="Eyakub Shop - জুতা ও ফ্যাশন পণ্য">
-<title>Eyakub Shop — জুতা ও ফ্যাশন</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-</head>
-<body>
-<div class="topbar"><div>🚚 সারা বাংলাদেশে ডেলিভারি</div><div>🔒 নিরাপদ অর্ডার • 💬 WhatsApp সাপোর্ট</div></div>
-<header class="header">
-  <a class="brand" href="index.html"><span class="brand-icon">🛒</span><span>Eyakub <b>Shop</b></span></a>
-  <form class="search" id="searchForm"><input id="searchInput" placeholder="পণ্য খুঁজুন..."><button>⌕</button></form>
-  <div class="header-actions">
-    <a href="https://www.facebook.com/profile.php?id=61594226919156" target="_blank">◉ Facebook</a>
-    <button id="wishlistBtn">♡ Wishlist</button>
-    <button id="cartBtn" class="cart-btn">🛒 Cart <span id="cartCount">0</span></button>
-    <button class="menu-btn" id="mobileMenu">☰</button>
-  </div>
-</header>
-<nav class="nav" id="nav">
-  <a class="active" data-cat="all">⌂ Home</a><a data-cat="shoes">👟 ছেলেদের জুতা</a><a data-cat="bags">👜 লেডিস ব্যাগ</a>
-  <a data-cat="shoes">⚡ Sneakers</a><a data-cat="bags">💎 Fashion</a><a data-cat="all">🎁 অফার</a>
-</nav>
-<main>
-<section class="hero">
-  <div class="hero-copy"><span>Special Offer</span><h1>স্টাইলিশ জুতা<br><b>সেরা দামে!</b></h1><p>আপনার স্টাইল, আমাদের অঙ্গীকার</p><button class="primary" data-scroll="flash">Shop Now →</button></div>
-  <div class="hero-shoe hero-shoe-a">👟</div><div class="hero-shoe hero-shoe-b">👟</div>
-  <div class="discount">UP TO<br><b>50%</b><br>OFF</div>
-</section>
-<section class="categories">
-  <button data-cat="shoes">👟<b>ছেলেদের জুতা</b></button><button data-cat="bags">👜<b>লেডিস ব্যাগ</b></button><button>⌚<b>ঘড়ি</b></button><button>👕<b>পোশাক</b></button><button>💻<b>ইলেকট্রনিক্স</b></button><button>💄<b>বিউটি</b></button><button>🛋️<b>হোম</b></button><button data-cat="all">▦<b>আরও</b></button>
-</section>
-<section class="benefits">
-  <div>🚚 <b>সারা দেশে ডেলিভারি</b><small>ফাস্ট ও নিরাপদ</small></div><div>🛡️ <b>নিরাপদ অর্ডার</b><small>100% সাপোর্ট</small></div><div>↻ <b>সহজ রিটার্ন</b><small>৭ দিনের মধ্যে</small></div><div>🎧 <b>২৪/৭ সাপোর্ট</b><small>WhatsApp-এ যোগাযোগ</small></div>
-</section>
-<section class="section" id="flash"><div class="section-head"><h2>⚡ Flash Sale</h2><span class="timer">শেষ হতে বাকি: <b id="timer">23:59:59</b></span><button class="link" id="showFlash">সব দেখুন →</button></div><div class="product-grid" id="flashGrid"></div></section>
-<section class="banners"><div class="collection green"><div><small>Men's Collection</small><h2>ছেলেদের জুতা</h2><p>স্টাইল + কমফোর্ট = পারফেক্ট লুক</p><button data-cat="shoes">Shop Now →</button></div><div class="big-emoji">👟</div></div><div class="collection pink"><div><small>Ladies Collection</small><h2>লেডিস ব্যাগ</h2><p>প্রতিদিনের স্টাইল, আপনার সাথে</p><button data-cat="bags">Shop Now →</button></div><div class="big-emoji">👜</div></div></section>
-<section class="section"><div class="section-head"><h2>🔥 জনপ্রিয় পণ্য</h2><button class="link" id="showAll">সব দেখুন →</button></div><div class="product-grid" id="popularGrid"></div></section>
-<section class="section products-section"><div class="section-head"><h2 id="listingTitle">সব পণ্য</h2><div class="filters"><select id="sort"><option value="popular">জনপ্রিয়</option><option value="low">কম দাম</option><option value="high">বেশি দাম</option><option value="new">নতুন</option></select></div></div><div class="product-grid" id="productGrid"></div><div class="load-more"><button class="outline" id="loadMore">আরও পণ্য দেখুন</button></div></section>
+<!DOCTYPE html><html lang="bn"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Eyakub Shop</title>
+<link rel="stylesheet" href="css/style.css"><script src="js/store.js"></script></head><body>
+<header><div class="wrap top"><a class="logo" href="./">🛒 Eyakub <b>Shop</b></a>
+<div class="search"><input id="q" placeholder="পণ্য খুঁজুন..."><button onclick="render()">খুঁজুন</button></div></div></header>
+<div class="nav"><div class="wrap" id="cats"></div></div>
+<main class="wrap">
+<section class="hero"><div><span style="background:var(--g);padding:3px 10px;border-radius:20px;font-size:13px">Special Offer</span><h1>স্টাইলিশ জুতা<br>সেরা দামে!</h1><p>আপনার স্টাইল, আমাদের অঙ্গীকার</p><button class="btn w" onclick="document.getElementById('all').scrollIntoView({behavior:'smooth'})">এখনই কিনুন</button></div><div class="off">৫০%<br><small style="font-size:20px">পর্যন্ত ছাড়</small></div></section>
+<div class="perks"><div>🚚 <b>সারা দেশে ডেলিভারি</b><br>দ্রুত ও নিরাপদ</div><div>🛡️ <b>নিরাপদ অর্ডার</b><br>WhatsApp এ কনফার্ম</div><div>🔄 <b>সহজ রিটার্ন</b><br>৭ দিনের মধ্যে</div><div>🎧 <b>২৪/৭ সাপোর্ট</b><br>আমাদের সাথে থাকুন</div></div>
+<h2>⚡ Flash Sale</h2><div class="grid" id="flash"></div>
+<h2 id="all">সব পণ্য</h2><div class="grid" id="list"></div><button class="btn more" id="more" onclick="lim+=24;render()">আরও দেখুন</button>
 </main>
-<footer><div class="footer-main"><div><div class="brand footer-brand">Eyakub <b>Shop</b></div><p>Better Products • Better Life</p></div><div><h4>সহায়তা</h4><a href="#order">অর্ডার করুন</a><a href="https://wa.me/966567225245" target="_blank">WhatsApp</a><a href="https://www.facebook.com/profile.php?id=61594226919156" target="_blank">Facebook Page</a></div><div><h4>গুরুত্বপূর্ণ লিংক</h4><a href="index.html">Home</a><a href="admin.html">Admin Panel</a><a href="#products">Products</a></div><div><h4>সোশ্যাল মিডিয়া</h4><p>f&nbsp; ▶&nbsp; ♪&nbsp; ◎</p></div></div><div class="copyright">© 2026 Eyakub Shop. All rights reserved.</div></footer>
-
-<div class="overlay" id="overlay"></div>
-<aside class="drawer" id="cartDrawer"><div class="drawer-head"><h2>🛒 আপনার Cart</h2><button class="close">×</button></div><div id="cartItems"></div><div class="cart-total"><span>মোট</span><b id="cartTotal">৳0</b></div><button class="primary full" id="checkoutBtn">অর্ডার করুন</button></aside>
-<div class="modal" id="productModal"><div class="modal-box product-detail"><button class="modal-close">×</button><div id="productDetail"></div></div></div>
-<div class="modal" id="checkoutModal"><div class="modal-box checkout"><button class="modal-close">×</button><h2>অর্ডার সম্পন্ন করুন</h2><p class="muted">তথ্য পূরণ করে WhatsApp-এ অর্ডার পাঠান।</p><form id="checkoutForm"><div class="form-grid"><label>নাম *<input name="name" required></label><label>ফোন নম্বর *<input name="phone" required inputmode="tel"></label><label>বিকল্প ফোন<input name="altPhone"></label><label>বিভাগ *<input name="division" required placeholder="যেমন: ঢাকা"></label><label>জেলা *<input name="district" required></label><label>উপজেলা/থানা *<input name="upazila" required></label><label>পোস্ট কোড<input name="postal"></label><label>পেমেন্ট<select name="payment"><option>Cash on Delivery</option><option>WhatsApp Confirmation</option></select></label><label class="wide">সম্পূর্ণ ঠিকানা *<textarea name="address" required placeholder="বাড়ি/রোড/এলাকা"></textarea></label><label class="wide">অতিরিক্ত নোট<textarea name="note" placeholder="সাইজ/কালার বা ডেলিভারি সংক্রান্ত তথ্য"></textarea></label></div><div id="checkoutSummary" class="order-summary"></div><button class="primary full" type="submit">WhatsApp-এ অর্ডার পাঠান →</button></form></div></div>
-<script src="products.js"></script><script src="app.js"></script>
-</body></html>
+<footer><div class="wrap"><b style="font-size:18px;color:#fff">Eyakub Shop</b> — Better Products, Better Life<br><br>📱 WhatsApp: <a id="wal"></a> &nbsp; 📘 <a href="" id="fb" target="_blank">আমাদের Facebook পেইজ</a><br><br>© 2026 Eyakub Shop. All rights reserved.</div></footer>
+<div class="modal" id="m" onclick="if(event.target===this)closeM()"><div class="box"><button class="x" onclick="closeM()">×</button><div id="mb"></div><h2>আরও পণ্য</h2><div class="grid" id="rel"></div></div></div>
+<script>
+let P=[],cat='all',lim=24,cur=null,selC='',selS='';
+const img=p=>p.img||art(p.cat,p.color[0]),off=p=>Math.round((1-p.price/p.old)*100);
+function card(p){return `<div class="card" onclick="openM(${p.id})"><span class="badge">-${off(p)}%</span><img loading="lazy" src="${img(p)}"><div class="n">${p.name}</div><div class="pr">${tk(p.price)}<s>${tk(p.old)}</s></div><div class="meta">⭐ ${p.rating} · ${p.sold} বিক্রি</div>${p.stock<1?'<div class="out meta">স্টক শেষ</div>':''}</div>`}
+function render(){const q=document.getElementById('q').value.toLowerCase();
+ const cs=[...new Set(P.map(p=>p.cat))];document.getElementById('cats').innerHTML=['all',...cs].map(c=>`<button class="${c===cat?'on':''}" onclick="cat='${c}';lim=24;render()">${c==='all'?'🏠 হোম':catName(c)}</button>`).join('');
+ const f=P.filter(p=>(cat==='all'||p.cat===cat)&&p.name.toLowerCase().includes(q));
+ document.getElementById('flash').innerHTML=[...P].sort((a,b)=>off(b)-off(a)).slice(0,5).map(card).join('');
+ document.getElementById('list').innerHTML=f.slice(0,lim).map(card).join('')||'<p>কোনো পণ্য পাওয়া যায়নি।</p>';
+ document.getElementById('more').style.display=f.length>lim?'block':'none'}
+function openM(id){cur=P.find(p=>p.id===id);selC=cur.color[0];selS=cur.sizes[0];drawM();
+ document.getElementById('rel').innerHTML=P.filter(p=>p.cat===cur.cat&&p.id!==id).sort(()=>Math.random()-.5).slice(0,8).map(card).join('');
+ document.getElementById('m').classList.add('on');document.getElementById('m').scrollTop=0}
+function drawM(){const p=cur;document.getElementById('mb').innerHTML=`<div class="det"><div><img src="${p.img||art(p.cat,selC)}"></div><div>
+<h2 style="margin-top:0">${p.name}</h2><div class="pr" style="font-size:22px">${tk(p.price)}<s>${tk(p.old)}</s> <span class="badge" style="position:static">-${off(p)}%</span></div>
+<p class="meta" style="margin:6px 0">${p.desc} · স্টক: ${p.stock} পিস</p>
+<label>কালার</label>${p.color.map(c=>`<span class="chip ${c===selC?'on':''}" onclick="selC='${c}';drawM()">${c}</span>`).join('')}
+<label>সাইজ</label>${p.sizes.map(s=>`<span class="chip ${s===selS?'on':''}" onclick="selS='${s}';drawM()">${s}</span>`).join('')}
+<h3 style="margin-top:16px">অর্ডার করুন</h3>
+<div class="f2"><div><label>আপনার নাম *</label><input id="on"></div><div><label>ফোন নাম্বার *</label><input id="op" type="tel"></div></div>
+<label>পূর্ণ ঠিকানা *</label><textarea id="oa" rows="2"></textarea>
+<div class="f2"><div><label>জেলা</label><input id="od"></div><div><label>পরিমাণ</label><input id="oq" type="number" min="1" max="${p.stock}" value="1"></div></div>
+<label>অতিরিক্ত নোট</label><input id="ot">
+<button class="btn" style="width:100%;margin-top:14px" ${p.stock<1?'disabled':''} onclick="order()">WhatsApp এ অর্ডার করুন</button></div></div>`}
+function order(){const g=i=>document.getElementById(i).value.trim();if(!g('on')||!g('op')||!g('oa'))return alert('নাম, ফোন ও ঠিকানা দিন');
+ const q=Math.max(1,+g('oq')||1),m=`🛒 নতুন অর্ডার - ${CFG.name}\nপণ্য: ${cur.name} (ID ${cur.id})\nকালার: ${selC}\nসাইজ: ${selS}\nপরিমাণ: ${q}\nমোট: ${tk(cur.price*q)}\n\nনাম: ${g('on')}\nফোন: ${g('op')}\nঠিকানা: ${g('oa')}\nজেলা: ${g('od')}\nনোট: ${g('ot')}`;
+ window.open(`https://wa.me/${CFG.wa}?text=${encodeURIComponent(m)}`,'_blank')}
+function closeM(){document.getElementById('m').classList.remove('on')}
+document.getElementById('q').addEventListener('keydown',e=>e.key==='Enter'&&render());
+document.getElementById('fb').href=CFG.fb;document.getElementById('wal').textContent='+'+CFG.wa;document.getElementById('wal').href='https://wa.me/'+CFG.wa;
+loadProducts().then(p=>{P=p;render()});
+</script></body></html>
